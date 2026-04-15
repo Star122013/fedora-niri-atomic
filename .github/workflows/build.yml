@@ -23,5 +23,6 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
+          file: Containerfile
           push: true
           tags: ghcr.io/star122013/fedora-niri-atomic:latest
