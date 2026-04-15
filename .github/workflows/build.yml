@@ -24,4 +24,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/fedora-niri-atomic:latest
+          tags: ghcr.io/star122013/fedora-niri-atomic:latest
