@@ -44,7 +44,7 @@ RUN dnf update && dnf upgrade -y && dnf install -y \
 
 WORKDIR /build
 
-RUN git clone https://github.com/niri-wm/niri.git /build/niri --branch wip/branch --depth 1
+RUN git clone https://github.com/niri-wm/niri.git /build/niri --branch main --depth 1
 
 RUN cd /build/niri && \
   cargo build --release --bin niri && \
