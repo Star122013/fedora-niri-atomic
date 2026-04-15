@@ -89,6 +89,8 @@ RUN mkdir -p /run && touch /run/ostree-booted \
   kernel-modules \
   kernel-modules-core \
   kernel-modules-extra \
+  && KERNEL_VERSION=$(rpm -q kernel-cachyos-lto --qf '%{VERSION}-%{RELEASE}.%{ARCH}' | tail -1) \
+  && dracut --force --kver "$KERNEL_VERSION" \
   && rm -f /run/ostree-booted \
   && dnf clean all
 
@@ -187,17 +189,17 @@ RUN systemctl enable bluetooth.service \
 
 # 12.cleanup
 RUN rm -rf /var/log/dnf5.log* \
-            /var/cache/dnf5 \
-            /var/cache/libdnf5 \
-            /var/cache/swcatalog \
-            /var/cache/ldconfig/aux-cache \
-            /var/lib/dnf/repos/*/countme \
-            /var/lib/authselect/checksum \
-            /var/cache/libX11 \
-            /var/lib/AccountsService \
-            /var/lib/dnf \
-            /var/lib/geoclue \
-            /var/lib/rpm-state
+  /var/cache/dnf5 \
+  /var/cache/libdnf5 \
+  /var/cache/swcatalog \
+  /var/cache/ldconfig/aux-cache \
+  /var/lib/dnf/repos/*/countme \
+  /var/lib/authselect/checksum \
+  /var/cache/libX11 \
+  /var/lib/AccountsService \
+  /var/lib/dnf \
+  /var/lib/geoclue \
+  /var/lib/rpm-state
 
 # 13.bootc lint
 RUN bootc container lint
