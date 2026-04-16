@@ -38,7 +38,7 @@ RUN dnf update && dnf upgrade -y && dnf install -y \
   systemd-devel \
   wayland-devel \
   rust \
-  cargo \ 
+  cargo \
   git \
   && dnf clean all
 
@@ -91,18 +91,19 @@ RUN mkdir -p /run && touch /run/ostree-booted \
   kernel-modules-extra \
   && KERNEL_VERSION=$(rpm -q kernel-cachyos-lto --qf '%{VERSION}-%{RELEASE}.%{ARCH}' | tail -1) \
   && dracut --force --no-hostonly --reproducible --add ostree \
-    --add-drivers "virtio virtio_blk virtio_scsi virtio_pci virtio_ring \
-nvme ahci xhci_hcd sd_mod" \
-    /usr/lib/modules/"$KERNEL_VERSION"/initramfs.img \
-    "$KERNEL_VERSION" \
+  --add-drivers "virtio virtio_blk virtio_scsi virtio_pci virtio_ring \
+  nvme ahci xhci_hcd sd_mod" \
+  /usr/lib/modules/"$KERNEL_VERSION"/initramfs.img \
+  "$KERNEL_VERSION" \
   && rm -f /run/ostree-booted \
   && dnf clean all
 
 
 # 3.niri session and base kde desktop
 COPY --from=niri-builder /out/runtime /
-RUN dnf install -y --setopt=install_weak_deps=False --setopt=strict=0  --nodocs \
+RUN dnf install -y --nodocs \
   plasma-desktop \
+  libseat \
   xdg-desktop-portal-gnome \
   xdg-desktop-portal-gtk \
   xwayland-satellite \
@@ -207,5 +208,3 @@ RUN rm -rf /var/log/dnf5.log* \
 
 # 13.bootc lint
 RUN bootc container lint
-
-
