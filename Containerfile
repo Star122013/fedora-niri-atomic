@@ -45,7 +45,6 @@ RUN dnf install -y \
 # 3.niri session and base kde desktop
 # COPY --from=niri-builder /out/runtime /
 RUN dnf install -y --nodocs \
-  sddm\
   plasma-desktop \
   libseat \
   xdg-desktop-portal-gnome \
@@ -138,7 +137,6 @@ RUN restorecon -RFv \
 
 # 11.systemctl
 RUN systemctl enable bluetooth.service \
-  && systemctl enable sddm.service \ 
   && systemctl enable nix-daemon.service \
   && systemctl enable firewalld.service \
   && systemctl enable avahi-daemon.service
