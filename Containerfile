@@ -139,8 +139,7 @@ RUN restorecon -RFv \
 RUN systemctl enable bluetooth.service \
   && systemctl enable nix-daemon.service \
   && systemctl enable firewalld.service \
-  && systemctl enable avahi-daemon.service \
-  && systemctl enable nix-home-link.service
+  && systemctl enable avahi-daemon.service
 
 # 13.bootc lint
 RUN bootc container lint
