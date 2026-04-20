@@ -1,0 +1,17 @@
+[Unit]
+Description=Replace /home symlink with bind mount for Nix compatibility
+DefaultDependencies=no
+After=systemd-tmpfiles-setup.service var-home.mount
+Before=nix-daemon.service nix-daemon.socket
+Conflicts=shutdown.target
+Wants=systemd-tmpfiles-setup.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/sh -c 'rm -f /home'
+ExecStart=/usr/bin/mkdir -p /home
+ExecStart=/usr/bin/mount --bind /var/home /home
+
+[Install]
+WantedBy=multi-user.target
