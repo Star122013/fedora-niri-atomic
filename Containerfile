@@ -101,12 +101,10 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
   && dnf clean all
 
 # The nix RPM %post may create /nix as a real directory during the container build.
-# At runtime bootc's / is read-only, so systemd-tmpfiles cannot replace a directory
-# with a symlink. Force it here: /nix must be a symlink to /var/nix (persistent /var).
-# tmpfiles.d/nix-storage.conf creates /var/nix at first boot.
-# inspired by https://gitlab.com/ThePhatLee/fedora-hyprland-atomic-deletion_scheduled-81102414
+# At runtime bootc's / is read-only, so tmpfiles.d/nix-storage.conf uses a bind mount
+# (b/) so /nix points to /var/nix without being a symlink (nix rejects symlinked store).
 RUN rm -rf /nix 2>/dev/null || true \
-  && ln -sf /var/nix /nix
+  && mkdir -p /var/nix
 
 # 9.zram
 RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
