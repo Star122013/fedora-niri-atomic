@@ -100,11 +100,10 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
   nix-daemon \
   && dnf clean all
 
-# The nix RPM %post may create /nix as a real directory during the container build.
-# At runtime bootc's / is read-only, so tmpfiles.d/nix-storage.conf uses a bind mount
-# (b/) so /nix points to /var/nix without being a symlink (nix rejects symlinked store).
-RUN rm -rf /nix 2>/dev/null || true \
-  && mkdir -p /var/nix
+# The nix RPM %post creates /nix as a real directory during container build.
+# bootc's / is read-only at runtime so this /nix persists — the
+# nix-store-mount.service bind-mounts /var/nix over it to share the store.
+RUN mkdir -p /var/nix
 
 # 9.zram
 RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
@@ -131,6 +130,7 @@ RUN restorecon -RFv \
 
 # 11.systemctl
 RUN systemctl enable bluetooth.service \
+  && systemctl enable nix-store-mount.service \
   && systemctl enable nix-daemon.service \
   && systemctl enable firewalld.service \
   && systemctl enable avahi-daemon.service

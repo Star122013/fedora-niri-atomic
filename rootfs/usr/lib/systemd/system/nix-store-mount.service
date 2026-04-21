@@ -1,0 +1,13 @@
+[Unit]
+Description=Nix store bind mount
+Before=nix-daemon.service
+After=systemd-tmpfiles-setup.service
+Requires=systemd-tmpfiles-setup.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/mount --bind /var/nix /nix
+
+[Install]
+WantedBy=multi-user.target
