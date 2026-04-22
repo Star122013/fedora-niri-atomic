@@ -99,6 +99,7 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
 RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
   nix \
   nix-daemon \
+  nix-filesystem \
   && dnf clean all
 
 # The nix RPM %post creates /nix as a real directory during container build.
