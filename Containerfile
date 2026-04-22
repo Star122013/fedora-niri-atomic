@@ -100,7 +100,7 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
 #   nix \
 #   nix-daemon \
 #   && dnf clean all
-RUN curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
+RUN curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --no-confirm
 # The nix RPM %post creates /nix as a real directory during container build.
 # bootc's / is read-only at runtime so this /nix persists — the
 # nix-store-mount.service bind-mounts /var/nix over it to share the store.
