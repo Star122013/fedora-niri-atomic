@@ -96,15 +96,15 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
   && dnf clean all
 
 # 8.nix
-RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
-  nix \
-  nix-daemon \
-  && dnf clean all
-
+# RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
+#   nix \
+#   nix-daemon \
+#   && dnf clean all
+RUN curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
 # The nix RPM %post creates /nix as a real directory during container build.
 # bootc's / is read-only at runtime so this /nix persists — the
 # nix-store-mount.service bind-mounts /var/nix over it to share the store.
-RUN mkdir -p /var/nix
+# RUN mkdir -p /var/nix
 
 # 9.zram
 RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
@@ -131,7 +131,7 @@ RUN restorecon -RFv \
 
 # 11.systemctl
 RUN systemctl enable bluetooth.service \
-  && systemctl enable nix-store-mount.service \
+  # && systemctl enable nix-store-mount.service \
   && systemctl enable nix-daemon.service \
   && systemctl enable firewalld.service \
   && systemctl enable avahi-daemon.service
