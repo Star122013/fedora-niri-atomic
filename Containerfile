@@ -39,17 +39,20 @@ RUN mkdir -p /run && touch /run/ostree-booted \
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:bieszczaders:kernel-cachyos-addons.repo \
   && dnf clean all
 
-# 3.niri session and base kde desktop
+# 3.desktop
 # COPY --from=niri-builder /out/runtime /
-# RUN dnf install -y --nodocs \
-#   xdg-desktop-portal-gnome \
-#   xdg-desktop-portal-gtk \
-#   xwayland-satellite \
-#   && dnf copr enable yalter/niri-git -y \
-#   && test -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
-#   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
-#   && dnf install -y niri \
-#   && dnf clean all
+RUN dnf copr enable -y deltacopy/plasma6-applets-kara \
+  && dnf copr enable hazel-bunny/ricing -y \
+  && dnf install -y plasma6-applets-kara \
+  kwin-scripts-krohnkite \
+  # xdg-desktop-portal-gnome \
+  # xdg-desktop-portal-gtk \
+  # xwayland-satellite \
+  # && dnf copr enable yalter/niri-git -y \
+  # && test -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
+  # && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
+  # && dnf install -y niri \
+  && dnf clean all
 
 # # 4.audio
 # RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
