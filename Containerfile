@@ -62,7 +62,8 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && dnf copr enable yalter/niri-git -y \
   && test -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
-  && dnf install -y plasma6-applets-kara kwin-scripts-krohnkite \
+  && dnf install -y --setopt=install_weak_deps=False --nodocs \
+  plasma6-applets-kara kwin-scripts-krohnkite \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
   noctalia-shell-git noctalia-qs \
@@ -98,6 +99,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
 RUN dnf copr enable -y atim/starship \
   && dnf copr enable -y atim/nushell \
   && dnf copr enable -y aldantanneo/jj-vcs \
+  && dnf copr enable -y jdxcode/mise \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
   foot \
   xdg-user-dirs \
@@ -112,6 +114,9 @@ RUN dnf copr enable -y atim/starship \
   nushell \
   starship \
   jj-cli \
+  zoxide \
+  mise \
+  helix \
   && dnf clean all
 
 # 7.base fonts
