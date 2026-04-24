@@ -135,7 +135,7 @@ RUN restorecon -RFv \
 
 # 11.systemctl
 RUN systemctl enable bluetooth.service \
-  && systemctl enable nix-store-mount.service \
+  && systemctl enable nix.mount \
   && systemctl enable nix-daemon.service \
   && systemctl enable firewalld.service \
   && systemctl enable avahi-daemon.service
