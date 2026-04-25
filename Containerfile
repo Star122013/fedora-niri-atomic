@@ -100,12 +100,18 @@ RUN dnf copr enable -y atim/starship \
   && dnf copr enable -y atim/nushell \
   && dnf copr enable -y aldantanneo/jj-vcs \
   && dnf copr enable -y jdxcode/mise \
+  && dnf copr enable -y anatta/television \
+  && dnf copr enable -y zhullyb/v2rayA \
+  && dnf copr enable -y lihaohong/yazi \
+  && dnf copr enable -y solopasha/hyprland \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
   foot \
+  kitty \
   xdg-user-dirs \
   xdg-utils \
   dconf \
   libnotify \
+  cliphist \
   git \
   wget \
   curl \
@@ -115,8 +121,19 @@ RUN dnf copr enable -y atim/starship \
   starship \
   jj-cli \
   zoxide \
+  rg \
+  fd \
+  jq \
+  bat \
+  tealdeer \
+  television \  
+  yazi \
   mise \
   helix \
+  fastfetch \
+  uv \
+  pixi \
+  dae \
   && dnf clean all
 
 # 7.base fonts
