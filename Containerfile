@@ -24,7 +24,8 @@ RUN apk add --no-cache curl jq unzip \
   && FILE="MapleMono-NF-CN.zip" \
   && DOWNLOAD_URL="https://github.com/subframe7536/maple-font/releases/download/${TAG}/${FILE}" \
   && curl -L ${DOWNLOAD_URL} -o /tmp/${FILE} \
-  && unzip /tmp/${FILE} -d /maple-mono-nf-cn
+  && mkdir /fonts \
+  && unzip /tmp/${FILE} -d /fonts/maple-mono-nf-cn
 
 FROM fedora AS grub-builder
 RUN dnf install -y curl git dialog bash 
@@ -34,8 +35,7 @@ WORKDIR /tmp/Elegant-grub2-themes
 RUN mkdir -p output && \
   bash generate.sh -t forest -p window -i left -c light -s 2k -d output/
 RUN mkdir -p /usr/share/grub/themes && \
-  cp -r output/Elegant-forest-window-left-light /usr/share/grub/themes/elegant
-  
+  cp -r output/Elegant-forest-window-left-light /usr/share/grub/themes/elegant  
 
 # stage 2 make system container
 FROM quay.io/fedora/fedora-kinoite:43
@@ -155,11 +155,12 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
   google-noto-sans-fonts \
   google-noto-emoji-fonts \
   && dnf clean all
-COPY --from=fonts-downloader /maple-mono-nf-cn /usr/share/fonts/
+COPY --from=fonts-downloader /fonts /usr/share/fonts/
 RUN fc-cache -fv
 
 # 8.grub
-COPY --from=grub-builder /usr/share/grub/themes /usr/share/grub/
+RUN mkdir -p /usr/share/grub/themes
+COPY --from=grub-builder /usr/share/grub/themes/ /usr/share/grub/themes/
 RUN sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/usr/share/grub/themes/elegant/theme.txt"|' /etc/default/grub \
   && sed -i 's|^GRUB_GFXMODE=.*|GRUB_GFXMODE="1920x1080x32"|' /etc/default/grub \
   && sed -i 's|^GRUB_DISABLE_OS_PROBER=.*|GRUB_DISABLE_OS_PROBER=false|' /etc/default/grub
