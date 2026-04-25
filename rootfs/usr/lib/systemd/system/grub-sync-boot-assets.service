@@ -1,0 +1,17 @@
+[Unit]
+Description=Sync GRUB theme and custom menus to /boot
+Before=systemd-update-done.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c ' \
+  mkdir -p /boot/grub2/themes && \
+  rsync -rptl --delete /usr/share/grub/themes/elegant/ /boot/grub2/themes/elegant/ && \
+  echo "GRUB_THEME=/boot/grub2/themes/elegant/theme.txt" > /boot/grub2/user.cfg && \
+  cp /etc/grub.d/40_custom /boot/grub2/custom.cfg 2>/dev/null || true \
+  '
+
+[Install]
+WantedBy=sysinit.target

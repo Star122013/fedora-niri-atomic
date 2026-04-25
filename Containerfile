@@ -25,6 +25,16 @@ RUN apk add --no-cache curl jq unzip \
   && DOWNLOAD_URL="https://github.com/subframe7536/maple-font/releases/download/${TAG}/${FILE}" \
   && curl -L ${DOWNLOAD_URL} -o /tmp/${FILE} \
   && unzip /tmp/${FILE} -d /maple-mono-nf-cn
+
+FROM fedora AS grub-builder
+RUN dnf install -y curl git dialog bash 
+WORKDIR /tmp
+RUN git clone https://github.com/vinceliuice/Elegant-grub2-themes.git
+WORKDIR /tmp/Elegant-grub2-themes
+RUN mkdir -p output && \
+  bash generate.sh -t forest -p window -i left -c light -s 2k -d output/
+RUN mkdir -p /usr/share/grub/themes && \
+  cp -r output/Elegant-forest-window-left-light /usr/share/grub/themes/elegant
   
 
 # stage 2 make system container
@@ -64,7 +74,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
   fcitx5 fcitx5-rime fcitx5-gtk fcitx5-qt fcitx5-configtool \
-  adw-gtk3-theme \
+  adw-gtk3-theme nautilus \
   plasma6-applets-kara kwin-scripts-krohnkite \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
@@ -72,6 +82,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   cliphist matugen brightnessctl qt6-qtmultimedia \
   grim slurp satty \
   niri \
+  os-prober \
   && dnf clean all
 
 # # 4.audio
@@ -146,17 +157,11 @@ RUN dnf install -y --setopt=install_weak_deps=False --nodocs \
 COPY --from=fonts-downloader /maple-mono-nf-cn /usr/share/fonts/
 RUN fc-cache -fv
 
-# 8.nix
-# RUN dnf install -y --nodocs \
-#   nix \
-#   nix-daemon \
-#   nix-legacy \
-#   && dnf clean all
-
-# The nix RPM %post creates /nix as a real directory during container build.
-# bootc's / is read-only at runtime so this /nix persists — the
-# nix-store-mount.service bind-mounts /var/nix over it to share the store.
-# RUN mkdir -p /var/nix
+# 8.grub
+COPY --from=grub-builder /usr/share/grub /usr/share
+RUN sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/usr/share/grub/themes/elegant/theme.txt"|' /etc/default/grub \
+  && sed -i 's|^GRUB_GFXMODE=.*|GRUB_GFXMODE="1920x1080x32"|' /etc/default/grub \
+  && sed -i 's|^GRUB_DISABLE_OS_PROBER=.*|GRUB_DISABLE_OS_PROBER=false|' /etc/default/grub
 
 # 9. flatpak
 RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -189,6 +194,7 @@ RUN systemd-sysusers \
   &&systemctl enable bluetooth.service \
   # && systemctl enable nix.mount \
   # && systemctl enable nix-daemon.service \
+  && systemctl enable grub-sync-boot-assets.service \
   && systemctl enable firewalld.service \
   && systemctl enable avahi-daemon.service
 
