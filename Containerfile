@@ -63,7 +63,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && test -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
-  fcitx5 fcitx5-rime fcitx5-gtk \
+  fcitx5 fcitx5-rime fcitx5-gtk fcitx5-qt fcitx5-configtool \
   adw-gtk3-theme \
   plasma6-applets-kara kwin-scripts-krohnkite \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
