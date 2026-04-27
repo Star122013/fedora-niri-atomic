@@ -80,7 +80,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   cliphist matugen brightnessctl qt6-qtmultimedia \
   grim slurp satty \
   niri \
-  && dnf install -y --nodocs lutris gamescope mangohud \
+  && dnf install -y lutris gamescope mangohud \
   && dnf remove -y firefox firefox-langpacks \
   && dnf clean all
 
