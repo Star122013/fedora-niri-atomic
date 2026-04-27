@@ -37,7 +37,7 @@ RUN apk add --no-cache curl jq unzip \
 #   cp -r output/Elegant-forest-window-left-light /usr/share/grub/themes/elegant  
 
 # stage 2 make system container
-FROM quay.io/fedora/fedora-kinoite:43
+FROM quay.io/fedora/fedora-silverblue:44
 
 COPY rootfs/ /
 
@@ -75,14 +75,13 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
   fcitx5 fcitx5-rime fcitx5-gtk fcitx5-qt fcitx5-configtool \
   adw-gtk3-theme nautilus \
-  plasma6-applets-kara kwin-scripts-krohnkite \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
   noctalia-shell-git noctalia-qs \
   cliphist matugen brightnessctl qt6-qtmultimedia \
   grim slurp satty \
   niri \
-  && dnf install -y lutris gamescope mangohud \
+  && dnf install -y --nodocs lutris gamescope mangohud \
   && dnf clean all
 
 # # 4.audio
@@ -119,38 +118,15 @@ RUN dnf copr enable -y atim/starship \
   && dnf copr enable -y solopasha/hyprland \
   && dnf copr enable -y scottames/ghostty \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
-  foot \
-  kitty \
-  ghostty \
-  xdg-user-dirs \
-  xdg-utils \
-  dconf \
-  libnotify \
-  cliphist \
-  git \
-  wget \
-  curl \
+  kitty ghostty \
+  xdg-user-dirs xdg-utils dconf libnotify cliphist \
+  git jj-cli \
+  wget curl dae \
+  nushell starship zoxide \
   distrobox \
-  chezmoi \
-  nushell \
-  starship \
-  jj-cli \
-  zoxide \
-  btop \
-  nvtop \
-  rg \
-  fd \
-  jq \
-  bat \
-  tealdeer \
-  television \  
-  yazi \
-  mise \
-  helix \
-  fastfetch \
-  uv \
-  pixi \
-  dae \
+  chezmoi yazi \
+  mise uv pixi helix fastfetch \
+  btop nvtop rg fd jq bat tealdeer television \
   && dnf clean all
 
 # 7.base fonts
