@@ -37,7 +37,7 @@ RUN apk add --no-cache curl jq unzip \
 #   cp -r output/Elegant-forest-window-left-light /usr/share/grub/themes/elegant  
 
 # stage 2 make system container
-FROM quay.io/fedora/fedora-silverblue:43
+FROM quay.io/fedora/fedora-kinoite:43
 
 COPY rootfs/ /
 
@@ -73,7 +73,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
   fcitx5 fcitx5-rime fcitx5-gtk fcitx5-qt fcitx5-configtool \
-  adw-gtk3-theme nautilus gnome-tweaks gtk-murrine-engine \
+  adw-gtk3-theme nautilus gtk-murrine-engine \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
   noctalia-shell-git noctalia-qs \
