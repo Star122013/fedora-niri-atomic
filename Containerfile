@@ -73,7 +73,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
   fcitx5 fcitx5-rime fcitx5-gtk fcitx5-qt fcitx5-configtool \
-  adw-gtk3-theme nautilus \
+  adw-gtk3-theme nautilus gnome-tweaks gtk-murrine-engine \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
   noctalia-shell-git noctalia-qs \
@@ -81,6 +81,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   grim slurp satty \
   niri \
   && dnf install -y --nodocs lutris gamescope mangohud \
+  && dnf remove -y firefox firefox-langpacks \
   && dnf clean all
 
 # # 4.audio
