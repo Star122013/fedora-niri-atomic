@@ -82,7 +82,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   cliphist matugen brightnessctl qt6-qtmultimedia \
   grim slurp satty \
   niri \
-  && dnf install -y lutris gamescope \
+  && dnf install -y lutris gamescope mangohud \
   && dnf clean all
 
 # # 4.audio
