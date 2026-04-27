@@ -77,7 +77,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
   noctalia-shell-git noctalia-qs \
-  cliphist matugen brightnessctl qt6-qtmultimedia \
+  cliphist matugen brightnessctl qt6-qtmultimedia kvantum \
   grim slurp satty \
   niri \
   && dnf install -y lutris gamescope mangohud \
@@ -123,10 +123,11 @@ RUN dnf copr enable -y atim/starship \
   git jj-cli \
   wget curl dae \
   nushell starship zoxide \
-  distrobox \
+  distrobox image-builder \
   chezmoi yazi \
   mise uv pixi helix fastfetch \
   btop nvtop rg fd jq bat tealdeer television \
+  && dnf install -y https://github.com/farion1231/cc-switch/releases/download/v3.14.1/CC-Switch-v3.14.1-Linux-x86_64.rpm \
   && dnf clean all
 
 # 7.base fonts
