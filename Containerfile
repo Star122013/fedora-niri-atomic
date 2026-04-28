@@ -120,7 +120,6 @@ RUN dnf copr enable -y atim/starship \
   && dnf copr enable -y rivenirvana/kitty \
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:rivenirvana:kitty.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
-  kitty kitty-kitten kitty-terminfo kitty-shell-integration ghostty \
   xdg-user-dirs xdg-utils dconf libnotify cliphist \
   git jj-cli \
   wget curl dae \
@@ -130,6 +129,7 @@ RUN dnf copr enable -y atim/starship \
   mise uv pixi helix fastfetch \
   btop nvtop rg fd jq bat tealdeer television \
   && dnf install -y https://github.com/farion1231/cc-switch/releases/download/v3.14.1/CC-Switch-v3.14.1-Linux-x86_64.rpm \
+  kitty ghostty \
   && dnf clean all
 
 # 7.base fonts
