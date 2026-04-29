@@ -37,7 +37,7 @@ RUN apk add --no-cache curl jq unzip \
 #   cp -r output/Elegant-forest-window-left-light /usr/share/grub/themes/elegant  
 
 # stage 2 make system container
-FROM quay.io/fedora/fedora-kinoite:43
+FROM quay.io/fedora/fedora-kinoite:44
 
 COPY rootfs/ /
 
