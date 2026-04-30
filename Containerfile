@@ -111,7 +111,6 @@ RUN dnf copr enable -y atim/starship \
   && dnf copr enable -y atim/nushell \
   && dnf copr enable -y aldantanneo/jj-vcs \
   && dnf copr enable -y jdxcode/mise \
-  && dnf copr enable -y anatta/television \
   && dnf copr enable -y zhullyb/v2rayA \
   && dnf copr enable -y lihaohong/yazi \
   && dnf copr enable -y solopasha/hyprland \
@@ -126,7 +125,7 @@ RUN dnf copr enable -y atim/starship \
   distrobox image-builder \
   chezmoi yazi \
   mise uv pixi helix fastfetch \
-  btop nvtop rg fd jq bat tealdeer television \
+  btop nvtop rg fd jq bat tealdeer \
   && dnf install -y https://github.com/farion1231/cc-switch/releases/download/v3.14.1/CC-Switch-v3.14.1-Linux-x86_64.rpm \
   kitty ghostty \
   && TAG=$(curl -s https://api.github.com/repos/chen08209/FlClash/releases/latest | jq -r ".tag_name") \
