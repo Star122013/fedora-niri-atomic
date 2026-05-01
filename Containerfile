@@ -107,25 +107,13 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
 #   && dnf clean all
 
 # 6.system utilities + bootstrap terminal
-RUN dnf copr enable -y atim/starship \
-  && dnf copr enable -y atim/nushell \
-  && dnf copr enable -y aldantanneo/jj-vcs \
-  && dnf copr enable -y jdxcode/mise \
+RUN dnf copr enable -y atim/nushell \
   && dnf copr enable -y zhullyb/v2rayA \
-  && dnf copr enable -y lihaohong/yazi \
-  && dnf copr enable -y solopasha/hyprland \
   && dnf copr enable -y scottames/ghostty \
   && dnf copr enable -y rivenirvana/kitty \
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:rivenirvana:kitty.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
-  xdg-user-dirs xdg-utils dconf libnotify cliphist \
-  git jj-cli \
-  wget curl dae \
-  nushell starship zoxide \
-  distrobox image-builder \
-  chezmoi yazi \
-  mise uv pixi helix fastfetch \
-  btop nvtop rg fd jq bat tealdeer \
+  git dae nushell distrobox image-builder zathura pixi \
   && dnf install -y https://github.com/farion1231/cc-switch/releases/download/v3.14.1/CC-Switch-v3.14.1-Linux-x86_64.rpm \
   kitty ghostty \
   && TAG=$(curl -s https://api.github.com/repos/chen08209/FlClash/releases/latest | jq -r ".tag_name") \
