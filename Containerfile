@@ -20,7 +20,7 @@ FROM alpine AS fonts-downloader
 RUN apk add --no-cache curl jq unzip \
   && TAG=$(curl -s https://api.github.com/repos/subframe7536/maple-font/releases/latest | jq -r ".tag_name") \
   && echo latest_verion: ${TAG} \
-  && FILE="MapleMono-NF-CN-unhinted.zip" \
+  && FILE="MapleMono-NF-CN.zip" \
   && DOWNLOAD_URL="https://github.com/subframe7536/maple-font/releases/download/${TAG}/${FILE}" \
   && curl -L ${DOWNLOAD_URL} -o /tmp/${FILE} \
   && mkdir /fonts \
@@ -69,6 +69,8 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   && dnf copr enable solopasha/hyprland -y \
   && dnf copr enable yalter/niri-git -y \
   && dnf copr enable swayfx/swayfx -y \
+  && dnf copr enable quadratech188/vicinae -y \
+  && dnf copr enable erikreider/SwayNotificationCenter -y \
   && test -f /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && printf '\npriority=1\n' >> /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:yalter:niri-git.repo \
   && dnf install -y --setopt=install_weak_deps=False --nodocs \
@@ -76,10 +78,10 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   adw-gtk3-theme nautilus gtk-murrine-engine \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite \
-  noctalia-shell-git noctalia-qs \
+  noctalia-shell-git noctalia-qs vicinae SwayNotificationCenter-git \
   cliphist matugen brightnessctl qt6-qtmultimedia kvantum \
   grim slurp satty \
-  niri  swayfx\
+  niri swayfx \
   && dnf install -y lutris gamescope mangohud \
   && dnf remove -y firefox firefox-langpacks \
   && dnf clean all
