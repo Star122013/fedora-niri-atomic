@@ -85,8 +85,8 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   fcitx5 fcitx5-rime fcitx5-gtk fcitx5-qt fcitx5-configtool \
   adw-gtk3-theme nautilus gtk-murrine-engine \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
-  xwayland-satellite wayland-protocols-devel  libxkbcommon \
-  noctalia-shell-git noctalia-qs vicinae waybar \
+  xwayland-satellite wayland-protocols-devel libxkbcommon river \
+  noctalia-shell-git noctalia-qs vicinae waybar cava \
   cliphist matugen brightnessctl qt6-qtmultimedia kvantum \
   grim slurp satty \
   niri \
