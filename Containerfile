@@ -112,7 +112,7 @@ RUN dnf install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com
   adw-gtk3-theme nautilus gtk-murrine-engine \
   xdg-desktop-portal-gnome xdg-desktop-portal-gtk \
   xwayland-satellite wayland-protocols-devel libxkbcommon river libcava-devel \
-  noctalia-shell-git noctalia-qs vicinae waybar cava \
+  noctalia-shell-git noctalia-qs vicinae waybar cava SwayNotificationCenter-git hypridle \
   cliphist matugen brightnessctl qt6-qtmultimedia kvantum \
   grim slurp satty \
   niri \
