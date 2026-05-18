@@ -7,5 +7,5 @@ ConditionPathExists=/etc/nix/flake.nix
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/fedora-nix-graphics-rebuild
+ExecStart=/usr/libexec/fedora-nix-graphics-rebuild
 RemainAfterExit=yes

@@ -8,7 +8,7 @@ ConditionPathExists=!/var/nix-system/graphics-drivers
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/fedora-nix-graphics-rebuild
+ExecStart=/usr/libexec/fedora-nix-graphics-rebuild
 RemainAfterExit=yes
 
 [Install]

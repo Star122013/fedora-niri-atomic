@@ -230,7 +230,7 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 
 - `/etc/nix/flake.nix`
 - `/etc/nix/nix.conf`
-- `/usr/local/bin/fedora-nix-graphics-rebuild`
+- `/usr/libexec/fedora-nix-graphics-rebuild`
 - `fedora-nix-graphics-bootstrap.service`
 - `fedora-nix-graphics-rebuild.service`
 - `fedora-nix-graphics-build.path`
@@ -252,7 +252,7 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 手动重建：
 
 ```bash
-sudo /usr/local/bin/fedora-nix-graphics-rebuild
+sudo /usr/libexec/fedora-nix-graphics-rebuild
 ```
 
 ### 6. 查看某一类配置
@@ -349,7 +349,7 @@ nu -c 'open build/config/repos.nuon | get copr.groups'
 
 - `rootfs/etc/nix/flake.nix`
 - `rootfs/etc/nix/nix.conf`
-- `rootfs/usr/local/bin/fedora-nix-graphics-rebuild`
+- `rootfs/usr/libexec/fedora-nix-graphics-rebuild`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-bootstrap.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-rebuild.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-build.path`

@@ -218,7 +218,7 @@ Shipped files include:
 
 - `/etc/nix/flake.nix`
 - `/etc/nix/nix.conf`
-- `/usr/local/bin/fedora-nix-graphics-rebuild`
+- `/usr/libexec/fedora-nix-graphics-rebuild`
 - `fedora-nix-graphics-bootstrap.service`
 - `fedora-nix-graphics-rebuild.service`
 - `fedora-nix-graphics-build.path`
@@ -240,7 +240,7 @@ Behavior:
 Manual rebuild:
 
 ```bash
-sudo /usr/local/bin/fedora-nix-graphics-rebuild
+sudo /usr/libexec/fedora-nix-graphics-rebuild
 ```
 
 ### 5. Inspect a specific config section
@@ -337,7 +337,7 @@ Edit:
 
 - `rootfs/etc/nix/flake.nix`
 - `rootfs/etc/nix/nix.conf`
-- `rootfs/usr/local/bin/fedora-nix-graphics-rebuild`
+- `rootfs/usr/libexec/fedora-nix-graphics-rebuild`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-bootstrap.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-rebuild.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-build.path`
