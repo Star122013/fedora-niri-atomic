@@ -1,0 +1,13 @@
+[Unit]
+Description=Refresh /run/opengl-driver symlink layout on bootc deployments
+After=nix.mount
+Requires=nix.mount
+ConditionPathExists=/usr/lib64/dri
+
+[Path]
+PathChanged=/usr/lib64/dri
+PathChanged=/usr/share/vulkan/icd.d
+Unit=non-nixos-gpu.service
+
+[Install]
+WantedBy=multi-user.target

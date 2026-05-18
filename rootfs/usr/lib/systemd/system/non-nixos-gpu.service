@@ -1,0 +1,15 @@
+[Unit]
+Description=GPU driver setup for Nix on non-NixOS Linux systems
+Documentation=https://discussion.fedoraproject.org/t/my-experience-integrating-nix-into-fedora-bootc/190809
+After=nix.mount
+Requires=nix.mount
+ConditionPathExists=/usr/lib64/dri
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -euxc 'mkdir -p /run/opengl-driver/lib /run/opengl-driver/share && ln -nsf /usr/lib64/dri /run/opengl-driver/lib/dri && ln -nsf /usr/lib64/gbm /run/opengl-driver/lib/gbm && for lib in /usr/lib64/libGLX_mesa.so.0 /usr/lib64/libEGL_mesa.so.0 /usr/lib64/libvulkan_*.so /usr/lib64/libVkLayer_*.so; do [ -e "$lib" ] && ln -nsf "$lib" /run/opengl-driver/lib/; done && for dir in /usr/share/glvnd /usr/share/vulkan /usr/share/egl; do [ -e "$dir" ] && ln -nsf "$dir" /run/opengl-driver/share/; done'
+ExecStop=/usr/bin/rm -rf /run/opengl-driver
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

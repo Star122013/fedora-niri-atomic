@@ -13,6 +13,10 @@
       "bluetooth.service"
       "firewalld.service"
       "avahi-daemon.service"
+      "nix.mount"
+      "nix-daemon.socket"
+      "non-nixos-gpu.service"
+      "non-nixos-gpu-refresh.path"
     ]
   }
 }
