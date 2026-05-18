@@ -6,6 +6,7 @@ ConditionPathExists=/etc/nix/flake.nix
 
 [Path]
 PathChanged=/etc/nix/flake.nix
+PathChanged=/etc/nix/flake.lock
 PathChanged=/etc/nix/nix.conf
 Unit=fedora-nix-graphics-rebuild.service
 
