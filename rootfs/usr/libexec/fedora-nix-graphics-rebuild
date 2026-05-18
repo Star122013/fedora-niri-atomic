@@ -2,9 +2,20 @@
 
 export def main [flake_ref: string = "/etc/nix"] {
   let nix_system_dir = "/var/nix-system"
+  let substituters = [
+    "https://mirror.sjtu.edu.cn/nix-channels/store"
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+    "https://mirrors.ustc.edu.cn/nix-channels/store"
+    "https://cache.nixos.org/"
+  ]
 
   mkdir $nix_system_dir
 
-  ^nix build --out-link $"($nix_system_dir)/graphics-drivers" $"($flake_ref)#graphicsDrivers"
-  ^systemctl start non-nixos-gpu.service
+  # Keep a command-line mirror fallback here so first-boot bootstrap still prefers
+  # domestic caches even if /etc/nix/nix.conf has not taken effect yet.
+  ^nix build \
+    --option substituters ($substituters | str join " ") \
+    --out-link $"($nix_system_dir)/graphics-drivers" \
+    $"($flake_ref)#graphicsDrivers"
+  ^systemctl start fedora-nix-graphics-link.service
 }

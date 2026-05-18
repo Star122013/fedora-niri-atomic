@@ -16,9 +16,9 @@
       "nix.mount"
       "nix-daemon.socket"
       "fedora-nix-graphics-bootstrap.service"
-      "fedora-nix-graphics-build.path"
-      "non-nixos-gpu.service"
-      "non-nixos-gpu-refresh.path"
+      "fedora-nix-graphics-rebuild.path"
+      "fedora-nix-graphics-link.service"
+      "fedora-nix-graphics-link.path"
     ]
   }
 }

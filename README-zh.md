@@ -233,9 +233,9 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 - `/usr/libexec/fedora-nix-graphics-rebuild`
 - `fedora-nix-graphics-bootstrap.service`
 - `fedora-nix-graphics-rebuild.service`
-- `fedora-nix-graphics-build.path`
-- `non-nixos-gpu.service`
-- `non-nixos-gpu-refresh.path`
+- `fedora-nix-graphics-rebuild.path`
+- `fedora-nix-graphics-link.service`
+- `fedora-nix-graphics-link.path`
 
 作用：
 
@@ -246,7 +246,7 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 行为：
 
 - 首次开机会自动运行 `fedora-nix-graphics-bootstrap.service`，如果运行时尚不存在则自动构建
-- 当 `/etc/nix/flake.nix` 或 `/etc/nix/nix.conf` 发生变化时，`fedora-nix-graphics-build.path` 会触发 `fedora-nix-graphics-rebuild.service`
+- 当 `/etc/nix/flake.nix` 或 `/etc/nix/nix.conf` 发生变化时，`fedora-nix-graphics-rebuild.path` 会触发 `fedora-nix-graphics-rebuild.service`
 - 用户级 `home-manager` 配置有意不放进本仓库，你可以继续放在 `~/.config/home-manager`
 
 手动重建：
@@ -353,8 +353,8 @@ nu -c 'open build/config/repos.nuon | get copr.groups'
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-bootstrap.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-rebuild.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-build.path`
-- `rootfs/usr/lib/systemd/system/non-nixos-gpu.service`
-- `rootfs/usr/lib/systemd/system/non-nixos-gpu-refresh.path`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-link.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-link.path`
 
 ---
 

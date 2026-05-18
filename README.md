@@ -221,9 +221,9 @@ Shipped files include:
 - `/usr/libexec/fedora-nix-graphics-rebuild`
 - `fedora-nix-graphics-bootstrap.service`
 - `fedora-nix-graphics-rebuild.service`
-- `fedora-nix-graphics-build.path`
-- `non-nixos-gpu.service`
-- `non-nixos-gpu-refresh.path`
+- `fedora-nix-graphics-rebuild.path`
+- `fedora-nix-graphics-link.service`
+- `fedora-nix-graphics-link.path`
 
 What it does:
 
@@ -234,7 +234,7 @@ What it does:
 Behavior:
 
 - on first boot, `fedora-nix-graphics-bootstrap.service` builds the runtime automatically if it does not exist yet
-- if `/etc/nix/flake.nix` or `/etc/nix/nix.conf` changes, `fedora-nix-graphics-build.path` triggers `fedora-nix-graphics-rebuild.service`
+- if `/etc/nix/flake.nix` or `/etc/nix/nix.conf` changes, `fedora-nix-graphics-rebuild.path` triggers `fedora-nix-graphics-rebuild.service`
 - user-level `home-manager` configuration is intentionally left out of this repository and can stay in `~/.config/home-manager`
 
 Manual rebuild:
@@ -341,8 +341,8 @@ Edit:
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-bootstrap.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-rebuild.service`
 - `rootfs/usr/lib/systemd/system/fedora-nix-graphics-build.path`
-- `rootfs/usr/lib/systemd/system/non-nixos-gpu.service`
-- `rootfs/usr/lib/systemd/system/non-nixos-gpu-refresh.path`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-link.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-link.path`
 
 ---
 
