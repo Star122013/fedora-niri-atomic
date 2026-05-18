@@ -82,6 +82,7 @@ Responsible for static filesystem content copied into the image:
 - systemd configuration
 - environment files
 - application configuration
+- Nix integration files under `/etc/nix`
 - anything else that should be shipped via `COPY rootfs/ /`
 
 If something is fundamentally “filesystem content inside the image”, it should usually live here rather than be generated dynamically by a script.
@@ -209,7 +210,40 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 
 ---
 
-### 4. Inspect a specific config section
+### 4. System-level Nix graphics runtime
+
+This image now ships a small system-level Nix graphics integration for non-NixOS use.
+
+Shipped files include:
+
+- `/etc/nix/flake.nix`
+- `/etc/nix/nix.conf`
+- `/usr/local/bin/fedora-nix-graphics-rebuild`
+- `fedora-nix-graphics-bootstrap.service`
+- `fedora-nix-graphics-rebuild.service`
+- `fedora-nix-graphics-build.path`
+- `non-nixos-gpu.service`
+- `non-nixos-gpu-refresh.path`
+
+What it does:
+
+- builds a Nix `graphicsDrivers` environment under `/var/nix-system/graphics-drivers`
+- links `/run/opengl-driver` to that runtime
+- gives Nix GUI / GPU programs a NixOS-like graphics runtime path on Fedora
+
+Behavior:
+
+- on first boot, `fedora-nix-graphics-bootstrap.service` builds the runtime automatically if it does not exist yet
+- if `/etc/nix/flake.nix` or `/etc/nix/nix.conf` changes, `fedora-nix-graphics-build.path` triggers `fedora-nix-graphics-rebuild.service`
+- user-level `home-manager` configuration is intentionally left out of this repository and can stay in `~/.config/home-manager`
+
+Manual rebuild:
+
+```bash
+sudo /usr/local/bin/fedora-nix-graphics-rebuild
+```
+
+### 5. Inspect a specific config section
 
 Show package groups:
 
@@ -295,6 +329,20 @@ Edit:
 Location:
 
 - `flatpak.remotes`
+
+---
+
+### Change system-level Nix graphics runtime
+Edit:
+
+- `rootfs/etc/nix/flake.nix`
+- `rootfs/etc/nix/nix.conf`
+- `rootfs/usr/local/bin/fedora-nix-graphics-rebuild`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-bootstrap.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-rebuild.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-build.path`
+- `rootfs/usr/lib/systemd/system/non-nixos-gpu.service`
+- `rootfs/usr/lib/systemd/system/non-nixos-gpu-refresh.path`
 
 ---
 

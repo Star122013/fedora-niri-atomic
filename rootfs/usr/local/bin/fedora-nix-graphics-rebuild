@@ -1,0 +1,10 @@
+#!/usr/bin/env nu
+
+export def main [flake_ref: string = "/etc/nix"] {
+  let nix_system_dir = "/var/nix-system"
+
+  mkdir $nix_system_dir
+
+  ^nix build --out-link $"($nix_system_dir)/graphics-drivers" $"($flake_ref)#graphicsDrivers"
+  ^systemctl start non-nixos-gpu.service
+}

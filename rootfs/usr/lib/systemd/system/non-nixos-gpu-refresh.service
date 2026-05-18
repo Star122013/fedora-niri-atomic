@@ -1,9 +1,0 @@
-[Unit]
-Description=Refresh /run/opengl-driver symlink for Nix apps on non-NixOS
-After=nix.mount
-Requires=nix.mount
-ConditionPathExists=/nix/var/nix/profiles/default
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/ln -nsf /nix/var/nix/profiles/default /run/opengl-driver

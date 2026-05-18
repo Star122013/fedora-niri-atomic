@@ -1,0 +1,15 @@
+[Unit]
+Description=Bootstrap system-level Nix graphics runtime on first boot
+After=network-online.target nix.mount nix-daemon.socket
+Wants=network-online.target nix-daemon.socket
+Requires=nix.mount
+ConditionPathExists=/etc/nix/flake.nix
+ConditionPathExists=!/var/nix-system/graphics-drivers
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/fedora-nix-graphics-rebuild
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

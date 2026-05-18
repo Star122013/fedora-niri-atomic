@@ -1,12 +1,12 @@
 [Unit]
-Description=Refresh /run/opengl-driver symlink layout on bootc deployments
-After=nix.mount
+Description=Refresh /run/opengl-driver when Nix graphics driver profile changes
+After=local-fs.target nix.mount
 Requires=nix.mount
-ConditionPathExists=/usr/lib64/dri
+ConditionPathExists=/var/nix-system/graphics-drivers
+ConditionPathIsDirectory=/var/nix-system/graphics-drivers
 
 [Path]
-PathChanged=/usr/lib64/dri
-PathChanged=/usr/share/vulkan/icd.d
+PathChanged=/var/nix-system/graphics-drivers
 Unit=non-nixos-gpu.service
 
 [Install]
