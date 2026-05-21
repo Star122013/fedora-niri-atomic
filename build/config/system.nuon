@@ -13,6 +13,10 @@
       "bluetooth.service"
       "firewalld.service"
       "avahi-daemon.service"
+      "nix.mount"
+      "nix-daemon.socket"
+      "fedora-nix-graphics-rebuild.service"
+      "fedora-nix-graphics-rebuild.path"
     ]
   }
 }

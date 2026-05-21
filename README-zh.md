@@ -82,6 +82,7 @@
 - systemd 配置
 - 环境文件
 - 程序配置
+- `/etc/nix` 下的 Nix 集成文件
 - 其它需要通过 `COPY rootfs/ /` 放入镜像的内容
 
 如果某个东西本质上是“镜像里的文件系统内容”，通常更适合放在这里，而不是由脚本动态生成。
@@ -221,7 +222,40 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 
 ---
 
-### 5. 查看某一类配置
+### 5. 系统级 Nix 图形运行时
+
+现在镜像内置了一套面向非 NixOS 的、系统级的 Nix 图形运行时集成。
+
+包含的文件有：
+
+- `/etc/nix/flake.nix`
+- `/etc/nix/nix.conf`
+- `/usr/libexec/fedora-nix-graphics-rebuild`
+- `fedora-nix-graphics-bootstrap.service`
+- `fedora-nix-graphics-rebuild.service`
+- `fedora-nix-graphics-rebuild.path`
+- `fedora-nix-graphics-link.service`
+- `fedora-nix-graphics-link.path`
+
+作用：
+
+- 构建一个 Nix `graphicsDrivers` 环境到 `/var/nix-system/graphics-drivers`
+- 将 `/run/opengl-driver` 链接到这个运行时
+- 让 Fedora 上的 Nix GUI / GPU 程序拥有类似 NixOS 的图形运行时路径
+
+行为：
+
+- 首次开机会自动运行 `fedora-nix-graphics-bootstrap.service`，如果运行时尚不存在则自动构建
+- 当 `/etc/nix/flake.nix` 或 `/etc/nix/nix.conf` 发生变化时，`fedora-nix-graphics-rebuild.path` 会触发 `fedora-nix-graphics-rebuild.service`
+- 用户级 `home-manager` 配置有意不放进本仓库，你可以继续放在 `~/.config/home-manager`
+
+手动重建：
+
+```bash
+sudo /usr/libexec/fedora-nix-graphics-rebuild
+```
+
+### 6. 查看某一类配置
 
 查看包分组：
 
@@ -307,6 +341,20 @@ nu -c 'open build/config/repos.nuon | get copr.groups'
 位置：
 
 - `flatpak.remotes`
+
+---
+
+### 修改系统级 Nix 图形运行时
+改：
+
+- `rootfs/etc/nix/flake.nix`
+- `rootfs/etc/nix/nix.conf`
+- `rootfs/usr/libexec/fedora-nix-graphics-rebuild`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-bootstrap.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-rebuild.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-build.path`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-link.service`
+- `rootfs/usr/lib/systemd/system/fedora-nix-graphics-link.path`
 
 ---
 
