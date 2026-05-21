@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: update-flake-lock
@@ -15,7 +16,7 @@ concurrency:
 
 jobs:
   update:
-    name: Update and push flake.lock
+    name: Update flake.lock and open PR
     runs-on: ubuntu-latest
 
     steps:
@@ -40,16 +41,14 @@ jobs:
 
           nix flake update
 
-      - name: Commit and push changes
-        run: |
-          if git diff --quiet -- rootfs/etc/nix/flake.lock; then
-            echo "rootfs/etc/nix/flake.lock is already up to date."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add rootfs/etc/nix/flake.lock
-          git commit -m "chore: update nix flake.lock"
-          git push
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: chore: update nix flake.lock
+          title: "chore: update nix flake.lock"
+          body: |
+            Automated update for `rootfs/etc/nix/flake.lock`.
+          branch: chore/update-nix-flake-lock
+          delete-branch: true
+          add-paths: |
+            rootfs/etc/nix/flake.lock
