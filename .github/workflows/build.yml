@@ -9,6 +9,10 @@ on:
 env:
   IMAGE_NAME: ghcr.io/star122013/fedora-niri-atomic
 
+concurrency:
+  group: build-and-push-oci-image
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
