@@ -30,7 +30,7 @@
         "celestelove/libcava"
         "eli-xciv/hyprland"
         "alternateved/cliphist"
-        "solopasha/hyprland"
+        "lionheartp/Hyprland"
         "scottames/awww"
         "yalter/niri-git"
         "quadratech188/vicinae"
@@ -67,6 +67,10 @@
     }
     {
       file: "_copr:copr.fedorainfracloud.org:rivenirvana:kitty.repo"
+      value: 1
+    }
+    {
+      file: "_copr:copr.fedorainfracloud.org:lionheartp:Hyprland.repo"
       value: 1
     }
   ]
