@@ -3,6 +3,7 @@
 
   groups: {
     desktop: [
+      "ly"
       "copr-cli"
       "fcitx5"
       "fcitx5-rime"
