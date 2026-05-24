@@ -3,13 +3,7 @@
 export def main [flake_ref: string = "/etc/nix"] {
   let nix_system_dir = "/var/nix-system"
   let out_link = $"($nix_system_dir)/graphics-drivers"
-  let state_file = $"($nix_system_dir)/graphics-drivers.input.sha256"
   let runtime_link = "/run/opengl-driver"
-  let inputs = [
-    "/etc/nix/flake.nix"
-    "/etc/nix/flake.lock"
-    "/etc/nix/nix.conf"
-  ]
   let substituters = [
     "https://mirror.sjtu.edu.cn/nix-channels/store"
     "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
@@ -19,36 +13,15 @@ export def main [flake_ref: string = "/etc/nix"] {
 
   mkdir $nix_system_dir
 
-  let current_hash = (
-    $inputs
-    | where {|path| $path | path exists }
-    | each {|path|
-        let digest = (open --raw $path | hash sha256)
-        $"($path) ($digest)"
-      }
-    | str join "\n"
-    | hash sha256
-  )
-  let previous_hash = if ($state_file | path exists) {
-    open --raw $state_file | str trim
-  } else {
-    ""
-  }
-  let needs_build = ((not ($out_link | path exists)) or ($current_hash != $previous_hash))
+  print "Realizing system-level Nix graphics runtime"
 
-  if $needs_build {
-    print "Building system-level Nix graphics runtime"
-
-    # Keep a command-line mirror fallback here so first-boot bootstrap still prefers
-    # domestic caches even if /etc/nix/nix.conf has not taken effect yet.
-    ^nix build --option substituters ($substituters | str join " ") --out-link $out_link $"($flake_ref)#graphicsDrivers"
-    if $env.LAST_EXIT_CODE != 0 {
-      exit $env.LAST_EXIT_CODE
-    }
-
-    $current_hash | save --force $state_file
-  } else {
-    print "Nix graphics runtime is up to date"
+  # Keep a command-line mirror fallback here so first-boot bootstrap still prefers
+  # domestic caches even if /etc/nix/nix.conf has not taken effect yet.
+  # `nix build --out-link` is idempotent: if the flake output is unchanged, Nix
+  # reuses the existing store path and only refreshes the GC-root symlink.
+  ^nix build --option substituters ($substituters | str join " ") --out-link $out_link $"($flake_ref)#graphicsDrivers"
+  if $env.LAST_EXIT_CODE != 0 {
+    exit $env.LAST_EXIT_CODE
   }
 
   if ($out_link | path exists) {
