@@ -18,6 +18,7 @@
       "xwayland-satellite"
       "niri"
       "hyprland"
+      "hyprland-guiutils"
       "wayfire"
       "river-classic"
       "wayland-protocols-devel"
