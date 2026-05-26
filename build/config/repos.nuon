@@ -31,11 +31,8 @@
         "eli-xciv/hyprland"
         "alternateved/cliphist"
         "lionheartp/Hyprland"
-        "scottames/awww"
         "yalter/niri-git"
-        "quadratech188/vicinae"
         "erikreider/SwayNotificationCenter"
-        "errornointernet/quickshell"
       ]
 
       utils: [
