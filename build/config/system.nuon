@@ -17,6 +17,7 @@
       "nix-daemon.socket"
       "fedora-nix-graphics-rebuild.service"
       "fedora-nix-graphics-rebuild.path"
+      "fedora-nix-gc.timer"
     ]
   }
 }

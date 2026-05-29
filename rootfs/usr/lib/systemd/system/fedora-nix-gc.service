@@ -1,0 +1,10 @@
+[Unit]
+Description=Garbage collect old Nix store paths
+Documentation=man:nix-collect-garbage(1)
+After=nix.mount nix-daemon.socket
+Wants=nix-daemon.socket
+Requires=nix.mount
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/nix-collect-garbage --delete-older-than 14d

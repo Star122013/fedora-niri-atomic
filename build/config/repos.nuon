@@ -27,19 +27,15 @@
 
       desktop: [
         "qwerhyy/misc-packages"
-        "celestelove/libcava"
         "eli-xciv/hyprland"
         "alternateved/cliphist"
         "lionheartp/Hyprland"
         "yalter/niri-git"
-        "erikreider/SwayNotificationCenter"
       ]
 
       utils: [
         "atim/nushell"
         "zhullyb/v2rayA"
-        "scottames/ghostty"
-        "rivenirvana/kitty"
         "peterwu/rendezvous"
       ]
     }
@@ -60,10 +56,6 @@
     }
     {
       file: "_copr:copr.fedorainfracloud.org:qwerhyy:misc-packages.repo"
-      value: 1
-    }
-    {
-      file: "_copr:copr.fedorainfracloud.org:rivenirvana:kitty.repo"
       value: 1
     }
     {
