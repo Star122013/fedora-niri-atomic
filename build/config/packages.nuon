@@ -5,22 +5,11 @@
     desktop: [
       "ly"
       "copr-cli"
-      "fcitx5"
-      "fcitx5-rime"
-      "fcitx5-gtk"
-      "fcitx5-qt"
-      "fcitx5-configtool"
-      "adw-gtk3-theme"
       "xdg-desktop-portal-gnome"
       "xdg-desktop-portal-gtk"
       "xwayland-satellite"
       "niri"
       "hyprland"
-      "fuzzel"
-      "cliphist"
-      "grim"
-      "slurp"
-      "satty"
       "hyprlock"
     ]
 
@@ -46,8 +35,6 @@
       "nix-legacy"
       "foot"
       "foot-terminfo"
-      "bibata-cursor-themes"
-      "pavucontrol"
       "vulkan-tools"
     ]
 
