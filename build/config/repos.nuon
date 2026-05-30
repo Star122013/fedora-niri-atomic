@@ -27,14 +27,11 @@
 
       desktop: [
         "qwerhyy/misc-packages"
-        "eli-xciv/hyprland"
-        "alternateved/cliphist"
         "lionheartp/Hyprland"
         "yalter/niri-git"
       ]
 
       utils: [
-        "atim/nushell"
         "zhullyb/v2rayA"
         "peterwu/rendezvous"
       ]

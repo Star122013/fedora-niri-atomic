@@ -7,10 +7,10 @@
       "copr-cli"
       "xdg-desktop-portal-gnome"
       "xdg-desktop-portal-gtk"
+      "xdg-desktop-portal-hyprland"
       "xwayland-satellite"
       "niri"
       "hyprland"
-      "hyprlock"
     ]
 
     gaming: [
@@ -27,7 +27,6 @@
       "distrobox"
       "image-builder"
       "skopeo"
-      "zathura"
       "nix"
       "nix-daemon"
       "nix-filesystem"
