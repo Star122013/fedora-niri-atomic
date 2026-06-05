@@ -23,6 +23,7 @@
 
     utils: [
       "firewalld"
+      "pipewire"
       "git"
       "busybox"
       "gcc"
