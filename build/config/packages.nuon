@@ -12,6 +12,7 @@
       "xwayland-satellite"
       "niri"
       "hyprland"
+      "flatpak"
     ]
 
     gaming: [
