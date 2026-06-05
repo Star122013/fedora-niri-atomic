@@ -38,6 +38,8 @@
       "foot"
       "foot-terminfo"
       "vulkan-tools"
+      "NetworkManager-wifi"
+      "iwlwifi-mvm-firmware"
     ]
 
     fonts: [
