@@ -40,6 +40,7 @@
       "vulkan-tools"
       "NetworkManager-wifi"
       "iwlwifi-mvm-firmware"
+      "glibc-langpack-en"
     ]
 
     fonts: [
