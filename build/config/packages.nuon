@@ -22,6 +22,7 @@
     ]
 
     utils: [
+      "firewalld"
       "git"
       "busybox"
       "gcc"
