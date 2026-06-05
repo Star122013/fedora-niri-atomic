@@ -4,6 +4,7 @@
   groups: {
     desktop: [
       "ly"
+      "kmscon"
       "copr-cli"
       "xdg-desktop-portal-gnome"
       "xdg-desktop-portal-gtk"
