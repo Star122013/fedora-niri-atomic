@@ -22,6 +22,7 @@
     ]
 
     utils: [
+      "xdg-utils"
       "firewalld"
       "pipewire"
       "pipewire-utils"
@@ -50,7 +51,6 @@
 
     fonts: [
       "google-noto-sans-fonts"
-      "google-noto-emoji-fonts"
     ]
 
     system: [
