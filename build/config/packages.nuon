@@ -24,6 +24,10 @@
     utils: [
       "firewalld"
       "pipewire"
+      "pipewire-utils"
+      "wireplumber"
+      "pipewire-alsa"
+      "pipewire-pulseaudio"
       "git"
       "busybox"
       "gcc"
