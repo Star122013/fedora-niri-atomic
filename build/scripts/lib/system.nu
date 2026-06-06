@@ -24,6 +24,15 @@ export def enable-services [dry_run: bool, services] {
   }
 }
 
+export def disable-services [dry_run: bool, services] {
+  print-step "masking unwanted system services"
+  print-bullets $services
+
+  for service in $services {
+    run-cmd $dry_run "systemctl" ["mask" $service]
+  }
+}
+
 export def run-bootc-lint [dry_run: bool] {
   print-step "running bootc container lint"
   run-cmd $dry_run "bootc" ["container" "lint"]
@@ -33,5 +42,6 @@ export def run-system-stage [dry_run: bool, system_cfg] {
   configure-flatpak $dry_run $system_cfg.flatpak
   refresh-font-cache $dry_run
   enable-services $dry_run $system_cfg.services.enable
+  disable-services $dry_run $system_cfg.services.disable
   run-bootc-lint $dry_run
 }

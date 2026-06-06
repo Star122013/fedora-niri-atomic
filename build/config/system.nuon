@@ -9,6 +9,9 @@
   }
 
   services: {
+    disable: [
+      "bootc-fetch-apply-updates.timer"
+    ]
     enable: [
       "bluetooth.service"
       "firewalld.service"
