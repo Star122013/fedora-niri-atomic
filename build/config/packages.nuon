@@ -22,6 +22,7 @@
     ]
 
     utils: [
+      "@virtualization"
       "colord"
       "upower"
       "power-profiles-daemon"
