@@ -9,9 +9,9 @@ graphical
 # groups = ["wheel"]
 # password = "cyrene"
 
-# [customizations.timezone]
-# timezone = "Asia/Shanghai"
+[customizations.timezone]
+timezone = "Asia/Shanghai"
 
-# [customizations.locale]
-# languages = ["zh_CN.UTF-8"]
-# keyboard = "us"
+[customizations.locale]
+languages = ["en_US.UTF-8"]
+keyboard = "us"
