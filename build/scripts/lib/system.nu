@@ -17,6 +17,8 @@ export def refresh-font-cache [dry_run: bool] {
 export def enable-services [dry_run: bool, services] {
   print-step "enabling system services"
   run-cmd $dry_run "systemd-sysusers" []
+  run-cmd $dry_run "grpck" ["-s"]
+  run-cmd $dry_run "pwck" ["-s"]
   print-bullets $services
 
   for service in $services {

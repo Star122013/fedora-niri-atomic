@@ -22,7 +22,16 @@
     ]
 
     utils: [
-      "@virtualization"
+      "qemu-kvm"
+      "libvirt-daemon-kvm"
+      "libvirt-daemon-config-network"
+      "libvirt-client"
+      "virt-install"
+      "virt-manager"
+      "virt-viewer"
+      "edk2-ovmf"
+      "swtpm"
+      "dnsmasq"
       "colord"
       "upower"
       "power-profiles-daemon"

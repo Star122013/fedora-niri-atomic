@@ -1,0 +1,15 @@
+[Unit]
+Description=Repair passwd/group/shadow consistency before system user creation
+Documentation=man:grpck(8) man:pwck(8)
+DefaultDependencies=no
+Before=systemd-sysusers.service
+ConditionPathExists=/usr/sbin/grpck
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/grpck -s
+ExecStart=/usr/sbin/pwck -s
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target
