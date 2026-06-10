@@ -21,7 +21,9 @@
       "fedora-nix-graphics-rebuild.service"
       "fedora-nix-graphics-rebuild.path"
       "fedora-nix-gc.timer"
-      "libvirtd.service"
+      "virtqemud.service"
+      "virtqemud.socket"
+      "virtstoraged.socket"
       "virtlogd.socket"
       "fedora-repair-passwd.service"
     ]
