@@ -21,7 +21,6 @@
       "fedora-nix-graphics-rebuild.service"
       "fedora-nix-graphics-rebuild.path"
       "fedora-nix-gc.timer"
-      "virtqemud.service"
       "fedora-repair-passwd.service"
     ]
   }
