@@ -10,12 +10,6 @@
 
   disable_glob: "*rawhide*"
 
-  terra_release: {
-    repofrompath: "terra,https://repos.fyralabs.com/terra$releasever"
-    package: "terra-release"
-    nogpgcheck: true
-  }
-
   copr: {
     enable_order: ["kernel" "desktop" "utils"]
 

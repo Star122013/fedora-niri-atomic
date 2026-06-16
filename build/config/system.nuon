@@ -9,6 +9,9 @@
   }
 
   services: {
+    disable: [
+      "bootc-fetch-apply-updates.timer"
+    ]
     enable: [
       "bluetooth.service"
       "firewalld.service"
@@ -18,6 +21,7 @@
       "fedora-nix-graphics-rebuild.service"
       "fedora-nix-graphics-rebuild.path"
       "fedora-nix-gc.timer"
+      "fedora-repair-passwd.service"
     ]
   }
 }

@@ -4,6 +4,7 @@
   groups: {
     desktop: [
       "ly"
+      "kmscon"
       "copr-cli"
       "xdg-desktop-portal-gnome"
       "xdg-desktop-portal-gtk"
@@ -11,6 +12,7 @@
       "xwayland-satellite"
       "niri"
       "hyprland"
+      "flatpak"
     ]
 
     gaming: [
@@ -20,6 +22,26 @@
     ]
 
     utils: [
+      "qemu-kvm"
+      "libvirt-daemon-kvm"
+      "libvirt-daemon-config-network"
+      "libvirt-client"
+      "virt-install"
+      "virt-manager"
+      "virt-viewer"
+      "edk2-ovmf"
+      "swtpm"
+      "dnsmasq"
+      "colord"
+      "upower"
+      "power-profiles-daemon"
+      "xdg-utils"
+      "firewalld"
+      "pipewire"
+      "pipewire-utils"
+      "wireplumber"
+      "pipewire-alsa"
+      "pipewire-pulseaudio"
       "git"
       "busybox"
       "gcc"
@@ -35,11 +57,17 @@
       "foot"
       "foot-terminfo"
       "vulkan-tools"
+      "NetworkManager-wifi"
+      "iwlwifi-mvm-firmware"
+      "glibc-langpack-en"
+      "libgexiv2"
+      "xrandr"
+      "pciutils"
     ]
 
     fonts: [
       "google-noto-sans-fonts"
-      "google-noto-emoji-fonts"
+      "google-noto-color-emoji-fonts"
     ]
 
     system: [
@@ -50,5 +78,6 @@
   remove: [
     "firefox"
     "firefox-langpacks"
+    "brlapi"
   ]
 }

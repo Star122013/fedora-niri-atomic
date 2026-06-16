@@ -59,20 +59,6 @@ export def disable-matching-repos [dry_run: bool, pattern: string] {
   }
 }
 
-export def install-terra-release [dry_run: bool, terra_cfg] {
-  print-step "installing terra-release"
-  print $"  repofrompath: ($terra_cfg.repofrompath)"
-  print $"  package: ($terra_cfg.package)"
-
-  let args = if $terra_cfg.nogpgcheck {
-    ["install" "-y" "--nogpgcheck" "--repofrompath" $terra_cfg.repofrompath $terra_cfg.package]
-  } else {
-    ["install" "-y" "--repofrompath" $terra_cfg.repofrompath $terra_cfg.package]
-  }
-
-  run-cmd $dry_run "dnf" $args
-}
-
 export def enable-copr-groups [dry_run: bool, copr_cfg] {
   for group in $copr_cfg.enable_order {
     let repos = ($copr_cfg.groups | get $group)
@@ -98,7 +84,6 @@ export def run-repo-stage [dry_run: bool, repos_cfg] {
   install-rpmfusion $dry_run $repos_cfg
   enable-config-manager-options $dry_run $repos_cfg.config_manager_setopts
   disable-matching-repos $dry_run $repos_cfg.disable_glob
-  install-terra-release $dry_run $repos_cfg.terra_release
   enable-copr-groups $dry_run $repos_cfg.copr
   apply-priority-overrides $dry_run $repos_cfg.priority_overrides
   dnf-clean $dry_run

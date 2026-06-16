@@ -17,10 +17,21 @@ export def refresh-font-cache [dry_run: bool] {
 export def enable-services [dry_run: bool, services] {
   print-step "enabling system services"
   run-cmd $dry_run "systemd-sysusers" []
+  run-cmd $dry_run "grpck" ["-s"]
+  run-cmd $dry_run "pwck" ["-s"]
   print-bullets $services
 
   for service in $services {
     run-cmd $dry_run "systemctl" ["enable" $service]
+  }
+}
+
+export def disable-services [dry_run: bool, services] {
+  print-step "masking unwanted system services"
+  print-bullets $services
+
+  for service in $services {
+    run-cmd $dry_run "systemctl" ["mask" $service]
   }
 }
 
@@ -33,5 +44,6 @@ export def run-system-stage [dry_run: bool, system_cfg] {
   configure-flatpak $dry_run $system_cfg.flatpak
   refresh-font-cache $dry_run
   enable-services $dry_run $system_cfg.services.enable
+  disable-services $dry_run $system_cfg.services.disable
   run-bootc-lint $dry_run
 }
