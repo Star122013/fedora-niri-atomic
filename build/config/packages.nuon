@@ -67,7 +67,6 @@
 
     fonts: [
       "google-noto-sans-fonts"
-      "google-noto-color-emoji-fonts"
     ]
 
     system: [
