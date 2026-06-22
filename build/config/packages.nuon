@@ -22,6 +22,7 @@
     ]
 
     utils: [
+      "colord"
       "qemu-kvm"
       "libvirt-daemon-kvm"
       "libvirt-daemon-config-network"
