@@ -33,7 +33,7 @@
 
 
 # stage 2 make system container
-FROM quay.io/fedora/fedora-bootc:44
+FROM quay.io/fedora/fedora-sway-atomic:44
 
 COPY rootfs/ /
 COPY build /tmp/build
