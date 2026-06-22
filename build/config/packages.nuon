@@ -34,7 +34,6 @@
       "dnsmasq"
       "colord"
       "upower"
-      "power-profiles-daemon"
       "xdg-utils"
       "firewalld"
       "pipewire"
