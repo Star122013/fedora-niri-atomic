@@ -10,6 +10,7 @@
       "xwayland-satellite"
       "niri"
       "hyprland"
+      "sway"
       "flatpak"
     ]
 
