@@ -51,9 +51,21 @@ export def install-github-latest-rpms [dry_run: bool, rpms] {
   }
 }
 
+export def reinstall-packages [dry_run: bool, packages] {
+  if (($packages | length) == 0) {
+    return
+  }
+
+  print-step "reinstalling packages (remove then install)"
+  print-bullets $packages
+  run-cmd $dry_run "dnf" (["remove" "-y"] | append $packages)
+  run-cmd $dry_run "dnf" ["install" "-y" "--setopt=install_weak_deps=False" "--nodocs" ...$packages]
+}
+
 export def run-package-stage [dry_run: bool, packages_cfg, extras_cfg] {
   install-package-groups $dry_run $packages_cfg
   remove-packages $dry_run $packages_cfg.remove
+  reinstall-packages $dry_run $packages_cfg.reinstall
   install-static-rpms $dry_run $extras_cfg.static
   install-github-latest-rpms $dry_run $extras_cfg.github_latest
   dnf-clean $dry_run

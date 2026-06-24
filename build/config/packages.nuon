@@ -1,6 +1,10 @@
 {
   install_order: ["desktop" "gaming" "utils" "fonts" "system"]
 
+  reinstall: [
+    "sway"
+  ]
+
   groups: {
     desktop: [
       "copr-cli"

@@ -20,7 +20,7 @@ Instead it uses **Nu + NUON** under `build/`.
 
 - `Containerfile` — image build entrypoint; bootstraps `nushell`, copies `build/`, then runs the Nu build pipeline
 - `build/config/repos.nuon` — repo definitions: rpmfusion, terra, COPRs, priority overrides
-- `build/config/packages.nuon` — package groups and remove list
+- `build/config/packages.nuon` — package groups, reinstall list, and remove list
 - `build/config/extras.nuon` — extra RPM URLs and GitHub latest-release RPMs
 - `build/config/system.nuon` — flatpak remotes and enabled systemd services
 - `build/scripts/build.nu` — top-level orchestrator
@@ -59,6 +59,15 @@ The Nu pipeline then runs three stages:
 nu -c 'open build/config/repos.nuon | get copr.groups'
 nu -c 'open build/config/packages.nuon | get groups.desktop'
 ```
+
+### `reinstall` mechanism
+
+When a package is pre-installed in the base image (e.g., `sway` from `fedora-sway-atomic`) and you want to replace it with a newer version from a COPR, add it to `reinstall` in `packages.nuon`. The pipeline will:
+
+1. `dnf remove -y <package>` — uninstall the base image version
+2. `dnf install -y <package>` — install from the highest-priority repo (your COPR)
+
+This is needed because `dnf install` on an already-installed package is a no-op, even if a newer version is available in a COPR.
 
 ### Safe preview
 
