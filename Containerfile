@@ -49,3 +49,7 @@ RUN dnf install -y \
 
 # COPY --from=fonts-downloader /fonts /usr/share/fonts/
 RUN nu /tmp/build/scripts/build.nu /tmp/build
+
+# re-apply rootfs after package install so RPM-shipped /etc defaults
+# (e.g. dae's empty /etc/dae/config.dae) do not clobber our config
+COPY rootfs/ /
