@@ -7,24 +7,16 @@
   groups: {
     desktop: [
       "copr-cli"
-      "xdg-desktop-portal-gnome"
-      "xdg-desktop-portal-gtk"
-      "xdg-desktop-portal-hyprland"
-      "xwayland-satellite"
-      "niri"
-      "hyprland"
-      "sway"
       "flatpak"
+      "plasma-union"
     ]
 
     gaming: [
-      "lutris"
       "gamescope"
       "mangohud"
     ]
 
     utils: [
-      "colord"
       "qemu-kvm"
       "libvirt-daemon-kvm"
       "libvirt-daemon-config-network"
