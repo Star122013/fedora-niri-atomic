@@ -54,8 +54,6 @@
       "NetworkManager-wifi"
       "iwlwifi-mvm-firmware"
       "glibc-langpack-en"
-      "libgexiv2"
-      "xrandr"
       "pciutils"
     ]
 

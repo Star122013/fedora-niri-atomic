@@ -1,17 +1,7 @@
 {
   static: [
-    {
-      name: "cc-switch"
-      url: "https://github.com/farion1231/cc-switch/releases/download/v3.14.1/CC-Switch-v3.14.1-Linux-x86_64.rpm"
-    }
-  ]
+      ]
 
   github_latest: [
-    {
-      name: "FlClash"
-      repo: "chen08209/FlClash"
-      version_prefix_to_strip: "v"
-      url_template: "https://github.com/chen08209/FlClash/releases/download/{tag}/FlClash-{version}-linux-amd64.rpm"
-    }
-  ]
+      ]
 }
