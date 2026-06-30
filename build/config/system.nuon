@@ -17,7 +17,7 @@
       "firewalld.service"
       "avahi-daemon.service"
       "nix.mount"
-      "nix-daemon.socket"
+      "nix-daemon"
       "fedora-nix-graphics-rebuild.service"
       "fedora-nix-gc.timer"
       "fedora-repair-passwd.service"
