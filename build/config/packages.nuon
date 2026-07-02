@@ -6,9 +6,11 @@
 
   groups: {
     desktop: [
+      "plasma-browser-integration"
       "copr-cli"
       "flatpak"
       "plasma-union"
+      "klassy"
     ]
 
     gaming: [

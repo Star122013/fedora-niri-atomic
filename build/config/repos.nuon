@@ -23,6 +23,7 @@
         "qwerhyy/misc-packages"
         "lionheartp/Hyprland"
         "yalter/niri-git"
+        "hazel-bunny/ricing"
       ]
 
       utils: [
