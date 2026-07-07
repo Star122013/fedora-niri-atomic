@@ -11,6 +11,7 @@
       "flatpak"
       "plasma-union"
       "klassy"
+      "niri"
     ]
 
     gaming: [
