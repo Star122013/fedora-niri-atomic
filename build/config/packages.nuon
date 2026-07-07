@@ -6,11 +6,8 @@
 
   groups: {
     desktop: [
-      "plasma-browser-integration"
       "copr-cli"
       "flatpak"
-      "plasma-union"
-      "klassy"
       "niri"
     ]
 
@@ -20,6 +17,7 @@
     ]
 
     utils: [
+      "ly"
       "qemu-kvm"
       "libvirt-daemon-kvm"
       "libvirt-daemon-config-network"
