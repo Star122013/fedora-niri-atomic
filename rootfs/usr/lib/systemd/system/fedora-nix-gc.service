@@ -1,8 +1,8 @@
 [Unit]
 Description=Garbage collect old Nix store paths
 Documentation=man:nix-collect-garbage(1)
-After=nix.mount nix-daemon.socket
-Wants=nix-daemon.socket
+After=nix.mount nix-daemon.service
+Wants=nix-daemon.service
 Requires=nix.mount
 
 [Service]
