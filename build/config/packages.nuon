@@ -64,6 +64,7 @@
 
     system: [
       "zram-generator"
+      "mesa-vulkan-drivers"
     ]
   }
 
