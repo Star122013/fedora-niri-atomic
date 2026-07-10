@@ -47,6 +47,10 @@ RUN dnf install -y \
     && dnf clean all
 
 # COPY --from=fonts-downloader /fonts /usr/share/fonts/
+
+# pre-copy custom systemd units (nix.mount, etc.) so systemctl enable can find them
+COPY rootfs/usr/lib/systemd/system/ /usr/lib/systemd/system/
+
 RUN nu /tmp/build/scripts/build.nu /tmp/build
 
 # re-apply rootfs after package install so RPM-shipped /etc defaults
