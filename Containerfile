@@ -35,7 +35,6 @@
 # stage 2 make system container
 FROM quay.io/fedora/fedora-bootc:44
 
-COPY rootfs/ /
 COPY build /tmp/build
 
 # bootstrap nushell, then let Nu orchestrate repos/packages/services
