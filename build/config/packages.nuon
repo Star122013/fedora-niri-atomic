@@ -6,9 +6,11 @@
 
   groups: {
     desktop: [
-      "copr-cli"
       "flatpak"
       "niri"
+      "xdg-desktop-portal"
+      "xdg-desktop-portal-gnome"
+      "xdg-desktop-portal-gtk"
     ]
 
     gaming: [
@@ -17,6 +19,7 @@
     ]
 
     utils: [
+      "copr-cli"
       "ly"
       "qemu-kvm"
       "libvirt-daemon-kvm"
