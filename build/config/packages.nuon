@@ -7,10 +7,13 @@
   groups: {
     desktop: [
       "flatpak"
+      "hyprland"
       "niri"
       "xdg-desktop-portal"
       "xdg-desktop-portal-gnome"
       "xdg-desktop-portal-gtk"
+      "xdg-desktop-portal-hyprland"
+      "gpu-screen-recorder"
     ]
 
     gaming: [
