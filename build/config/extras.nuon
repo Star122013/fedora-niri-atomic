@@ -1,7 +1,5 @@
 {
-  static: [
-      ]
+  static: []
 
-  github_latest: [
-      ]
+  github_latest: []
 }

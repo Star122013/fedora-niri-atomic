@@ -1,8 +1,7 @@
 {
   install_order: ["desktop" "gaming" "utils" "fonts" "system"]
 
-  reinstall: [
-  ]
+  reinstall: []
 
   groups: {
     desktop: [
@@ -16,8 +15,7 @@
       "gpu-screen-recorder"
     ]
 
-    gaming: [
-    ]
+    gaming: []
 
     utils: [
       "copr-cli"
