@@ -65,6 +65,7 @@ routing {
     pname(systemd-networkd, NetworkManager) -> must_direct
     pname(conmon, netavark) -> must_direct
     pname(containerd, dockerd) -> must_direct
+    pname(chrome) -> must_direct
 
     # ── DNS ──
     l4proto(udp, tcp) && dport(53) -> direct
