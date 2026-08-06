@@ -43,6 +43,7 @@
       "busybox"
       "gcc"
       "dae"
+      "sing-box"
       "distrobox"
       "image-builder"
       "skopeo"

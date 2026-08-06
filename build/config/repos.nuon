@@ -10,6 +10,11 @@
 
   disable_glob: "*rawhide*"
 
+  # external repo files added via `dnf config-manager addrepo --from-repofile=<url>`
+  external_repos: [
+    "https://sing-box.app/sing-box.repo"
+  ]
+
   copr: {
     enable_order: ["kernel" "desktop" "utils"]
 

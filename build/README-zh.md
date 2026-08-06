@@ -283,6 +283,29 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build
 
 ---
 
+## sing-box（手动启用）
+
+镜像里已内置 sing-box 代理（为 dae 提供 SOCKS5 上游），但**默认不 enable**，需要手动启用：
+
+```bash
+# 1. 启用手动更新节点配置的服务 + 定时器（每天 20:00 拉取 node.json 并重启 singbox）
+sudo systemctl enable --now singbox-update.timer
+
+# 2. 启动 sing-box 本体（配置目录 /etc/singbox：base.json + node.json 自动合并）
+sudo systemctl enable --now singbox.service
+```
+
+相关文件：
+
+- `rootfs/etc/singbox/base.json` — 静态配置（SOCKS5 inbound :2080、outbound selector、路由规则）
+- `rootfs/usr/lib/systemd/system/singbox.service` — 运行 `sing-box run -C /etc/singbox`
+- `rootfs/usr/lib/systemd/system/singbox-update.service` — 从 SubStore 拉取节点配置
+- `rootfs/usr/lib/systemd/system/singbox-update.timer` — 每日 20:00 刷新
+
+> 注意：官方 sing-box RPM 自带 `sing-box.service`，这里用 `singbox`（无连字符）命名避免被覆盖。
+
+---
+
 ## 推荐习惯
 
 每次改完配置，先运行：

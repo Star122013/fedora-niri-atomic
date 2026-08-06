@@ -283,6 +283,29 @@ Prefer editing:
 
 ---
 
+## sing-box (manual enable)
+
+The image ships a sing-box proxy (SOCKS5 upstream for dae) but it is **not enabled by default** — enable it manually:
+
+```bash
+# 1. enable the node-config updater service + timer (daily 20:00 fetch of node.json, then restart singbox)
+sudo systemctl enable --now singbox-update.timer
+
+# 2. start sing-box itself (config dir /etc/singbox: base.json + node.json auto-merged)
+sudo systemctl enable --now singbox.service
+```
+
+Relevant files:
+
+- `rootfs/etc/singbox/base.json` — static config (SOCKS5 inbound :2080, outbound selectors, routing rules)
+- `rootfs/usr/lib/systemd/system/singbox.service` — runs `sing-box run -C /etc/singbox`
+- `rootfs/usr/lib/systemd/system/singbox-update.service` — pulls node config from SubStore
+- `rootfs/usr/lib/systemd/system/singbox-update.timer` — daily refresh at 20:00
+
+> Note: the official sing-box RPM ships its own `sing-box.service`; we use `singbox` (no hyphen) to avoid being overwritten.
+
+---
+
 ## Recommended habit
 
 After changing config, always run:

@@ -1,0 +1,16 @@
+[Unit]
+Description=sing-box proxy provider for dae
+Documentation=man:sing-box(1) https://sing-box.sagernet.org/
+After=network-online.target singbox-update.service
+Wants=network-online.target singbox-update.service
+
+[Service]
+# Runs against a config *directory*: base.json (static) + node.json (downloaded via sing-box-update)
+# are deep-merged by sing-box at runtime.
+ExecStart=/usr/bin/sing-box run -C /etc/singbox
+WorkingDirectory=/etc/singbox
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

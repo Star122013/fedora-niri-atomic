@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily sing-box node config refresh
+
+[Timer]
+OnCalendar=20:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

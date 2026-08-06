@@ -59,6 +59,19 @@ export def disable-matching-repos [dry_run: bool, pattern: string] {
   }
 }
 
+export def add-external-repos [dry_run: bool, repos] {
+  if (($repos | length) == 0) {
+    return
+  }
+
+  print-step "adding external repos via dnf config-manager"
+  print-bullets $repos
+
+  for repo in $repos {
+    run-cmd $dry_run "dnf" ["config-manager" "addrepo" "--from-repofile" $repo]
+  }
+}
+
 export def enable-copr-groups [dry_run: bool, copr_cfg] {
   for group in $copr_cfg.enable_order {
     let repos = ($copr_cfg.groups | get $group)
@@ -85,6 +98,7 @@ export def run-repo-stage [dry_run: bool, repos_cfg] {
   enable-config-manager-options $dry_run $repos_cfg.config_manager_setopts
   disable-matching-repos $dry_run $repos_cfg.disable_glob
   enable-copr-groups $dry_run $repos_cfg.copr
+  add-external-repos $dry_run $repos_cfg.external_repos
   apply-priority-overrides $dry_run $repos_cfg.priority_overrides
   dnf-clean $dry_run
 }
