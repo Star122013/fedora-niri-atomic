@@ -83,13 +83,37 @@ build/
 
 - 固定下载 URL 的 RPM
 - 通过 GitHub latest release 动态获取 tag 的 RPM
+- 从直接 URL 下载的字体（原始 `.ttf`/`.otf`，或 `.zip`/`.tar.gz`/`.tar.xz`/`.tar.bz2`/`.7z` 等压缩包，解压到 `/usr/share/fonts`）
 
 适合修改的场景：
 
 - 更新 `cc-switch`
 - 新增 GitHub release 安装项
 - 调整 `FlClash` 下载模板
+- 添加任意直接下载链接中的字体
 
+字体条目示例：
+
+```nuon
+fonts: [
+  {
+    name: "LXGW WenKai GB"
+    url: "https://github.com/lxgw/LxgwWenkaiGB/releases/download/v1.522/lxgw-wenkai-gb-v1.522.tar.gz"
+    dest_dir: "/usr/share/fonts/lxgw-wenkai-gb"
+  }
+]
+
+# 单个字体文件也可直接使用（不解压）：
+fonts: [
+  {
+    name: "Some Font"
+    url: "https://example.com/path/font.ttf"
+    dest_dir: "/usr/share/fonts/custom"
+  }
+]
+```
+
+`url` 可以指向任意主机（不限于 GitHub）。压缩包按文件扩展名识别并解压到 `dest_dir`，普通 `.ttf`/`.otf` 直接复制。随后由系统阶段的 `fc-cache` 索引。依赖 `curl`、`unzip`、`p7zip`（已在 `utils` 包组中）。
 ---
 
 ### 4. `config/system.nuon`

@@ -2,4 +2,15 @@
   static: []
 
   github_latest: []
+
+  # fonts downloaded from a direct URL (not RPMs).
+  # url can point to a plain .ttf/.otf file OR an archive (.zip / .tar.gz / .tar.xz / .tar.bz2 / .7z);
+  # archives are extracted into dest_dir.  fc-cache (system stage) indexes them afterwards.
+  fonts: [
+    {
+      name: "LXGW WenKai GB"
+      url: "https://github.com/lxgw/LxgwWenkaiGB/releases/download/v1.522/lxgw-wenkai-gb-v1.522.tar.gz"
+      dest_dir: "/usr/share/fonts/lxgw-wenkai-gb"
+    }
+  ]
 }

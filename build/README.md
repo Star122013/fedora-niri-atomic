@@ -83,13 +83,41 @@ Extra RPM sources that are not ordinary named packages:
 
 - fixed download URL RPMs
 - GitHub latest-release RPMs
+- fonts downloaded from a direct URL (raw `.ttf`/`.otf` or an archive like `.zip`/
+  `.tar.gz`/`.tar.xz`/`.tar.bz2`/`.7z`), extracted into `/usr/share/fonts`
 
 Typical edits:
 
 - update `cc-switch`
 - add a new GitHub release install entry
 - adjust `FlClash` download template
+- add a font from any direct download URL
 
+A font entry looks like:
+
+```nuon
+fonts: [
+  {
+    name: "LXGW WenKai GB"
+    url: "https://github.com/lxgw/LxgwWenkaiGB/releases/download/v1.522/lxgw-wenkai-gb-v1.522.tar.gz"
+    dest_dir: "/usr/share/fonts/lxgw-wenkai-gb"
+  }
+]
+
+# a plain single file also works (no extraction):
+fonts: [
+  {
+    name: "Some Font"
+    url: "https://example.com/path/font.ttf"
+    dest_dir: "/usr/share/fonts/custom"
+  }
+]
+```
+
+`url` may point to any host (not just GitHub). Archives are detected by file extension and
+unpacked into `dest_dir`; plain `.ttf`/`.otf` files are copied as-is. `fc-cache` (system
+stage) indexes them afterwards. Requires `curl`, `unzip`, and `p7zip` (already in the
+`utils` package group).
 ---
 
 ### 4. `config/system.nuon`

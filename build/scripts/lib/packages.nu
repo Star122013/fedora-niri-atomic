@@ -1,5 +1,54 @@
 use common.nu [print-step print-bullets run-cmd dnf-clean dnf-install-lean strip-version-prefix]
 
+def extract-font-archive [dry_run: bool, archive: string, dest: string] {
+  if ($archive | str ends-with ".zip") {
+    run-cmd $dry_run "unzip" ["-q" "-o" $archive "-d" $dest]
+  } else if ($archive | str ends-with ".tar.gz") or ($archive | str ends-with ".tgz") {
+    run-cmd $dry_run "tar" ["-xzf" $archive "-C" $dest]
+  } else if ($archive | str ends-with ".tar.xz") {
+    run-cmd $dry_run "tar" ["-xJf" $archive "-C" $dest]
+  } else if ($archive | str ends-with ".tar.bz2") {
+    run-cmd $dry_run "tar" ["-xjf" $archive "-C" $dest]
+  } else if ($archive | str ends-with ".tar") {
+    run-cmd $dry_run "tar" ["-xf" $archive "-C" $dest]
+  } else if ($archive | str ends-with ".7z") {
+    run-cmd $dry_run "7z" ["x" "-y" $"-o($dest)" $archive]
+  } else {
+    # plain font file
+    run-cmd $dry_run "cp" [$archive $"($dest)/($archive | path basename)"]
+  }
+}
+
+export def install-fonts [dry_run: bool, fonts] {
+  if (($fonts | length) == 0) {
+    return
+  }
+
+  print-step "installing fonts"
+
+  for font in $fonts {
+    let name = $font.name
+    let url = $font.url
+    let dest = $font.dest_dir
+    let filename = ($url | path basename)
+
+    print $"  - ($name)"
+    print $"    url: ($url)"
+    print $"    dest: ($dest)"
+
+    if $dry_run {
+      print $"    note: download + extract skipped in dry-run"
+      continue
+    }
+
+    let tmp = $"/tmp/($name | str kebab-case)"
+    run-cmd false "mkdir" ["-p" $tmp $dest]
+    run-cmd false "curl" ["-L" "--fail" "--silent" "--show-error" "-o" $"($tmp)/($filename)" $url]
+    extract-font-archive false $"($tmp)/($filename)" $dest
+    run-cmd false "rm" ["-rf" $tmp]
+  }
+}
+
 export def install-package-groups [dry_run: bool, packages_cfg] {
   for group in $packages_cfg.install_order {
     let packages = ($packages_cfg.groups | get $group)
@@ -68,5 +117,6 @@ export def run-package-stage [dry_run: bool, packages_cfg, extras_cfg] {
   reinstall-packages $dry_run $packages_cfg.reinstall
   install-static-rpms $dry_run $extras_cfg.static
   install-github-latest-rpms $dry_run $extras_cfg.github_latest
+  install-fonts $dry_run $extras_cfg.fonts
   dnf-clean $dry_run
 }
