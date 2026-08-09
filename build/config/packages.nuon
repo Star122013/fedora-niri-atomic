@@ -13,11 +13,14 @@
       "xdg-desktop-portal-gtk"
       "xdg-desktop-portal-hyprland"
       "gpu-screen-recorder"
+      "ghostty"
+      "noctalia-git"
     ]
 
     gaming: []
 
     utils: [
+      "zmx"
       "copr-cli"
       "ly"
       "qemu-kvm"
