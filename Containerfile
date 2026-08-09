@@ -37,7 +37,22 @@ FROM quay.io/fedora/fedora-bootc:44
 
 COPY build /tmp/build
 
-# bootstrap nushell, then let Nu orchestrate repos/packages/services
+# ================================================================
+# Layer ordering strategy (stable -> changing) for better caching:
+#   L1  bootstrap (rpmfusion + nushell)
+#   L2  repo stage (rpmfusion / terra / COPR / priority)
+#   L3  system group      (zram, mesa)      -- foundational, rarely churn
+#   L4  fonts group       (noto)            -- stable
+#   L5  utils group       (toolchain, etc.) -- stable-ish
+#   L6  desktop group     (niri, hyprland)  -- changes most often
+#   L7  gaming group
+#   L8  finalize (removals / extras / font download / clean)
+#   L9  system stage (flatpak / services / bootc lint)
+# Each RUN is its own layer, so unchanged packages are cached and
+# only the layers after a change are rebuilt.
+# ================================================================
+
+# L1: bootstrap nushell, then let Nu orchestrate repos/packages/services
 RUN dnf install -y \
     https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
@@ -46,13 +61,30 @@ RUN dnf install -y \
     && dnf install -y nushell \
     && dnf clean all
 
-# COPY --from=fonts-downloader /fonts /usr/share/fonts/
+# L2: repo stage
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage repo
+
+# L3-L7: install package groups, stable first
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group system
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group fonts
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group utils
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group desktop
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group gaming
+
+# L8: removals / reinstalls / static & github-latest RPMs / font download + clean
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage finalize
 
 # pre-copy custom systemd units (nix.mount, etc.) so systemctl enable can find them
 COPY rootfs/usr/lib/systemd/system/ /usr/lib/systemd/system/
 
-RUN nu /tmp/build/scripts/build.nu /tmp/build
+# L9: flatpak remotes / font cache / systemd services / bootc lint
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage system
 
 # re-apply rootfs after package install so RPM-shipped /etc defaults
 # (e.g. dae's empty /etc/dae/config.dae) do not clobber our config
 COPY rootfs/ /
+
+# dae requires config.dae to be 0600. git does not preserve full file
+# modes (only the executable bit), so a fresh checkout may yield 0644;
+# enforce 0600 at build time instead of relying on the source mode.
+RUN chmod 0600 /etc/dae/config.dae

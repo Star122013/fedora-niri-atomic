@@ -142,10 +142,23 @@ It only:
 
 1. finds the `build/` root
 2. loads all `nuon` config files
-3. runs the three stages in order:
+3. runs the stages, orderable per invocation:
    - repo stage
-   - package stage
+   - package stage (all groups, or a single `--group`)
+   - finalize stage (removals / reinstalls / extras / font download)
    - system stage
+
+It supports `--stage` and an optional `--group` so the `Containerfile`
+can split work across multiple `RUN` layers (see “Layer ordering”).
+
+Supported `--stage` values:
+
+- `repo` — repo stage only
+- `packages` — install package groups; if `--group <name>` is given,
+  install that single group only, otherwise all groups in `install_order`
+- `finalize` — removals / reinstalls / static & github-latest RPMs / fonts
+- `system` — flatpak / font cache / services / bootc lint
+- `all` (default) — repo → packages → finalize → system
 
 ---
 
@@ -180,10 +193,12 @@ Repo stage only:
 ### `scripts/lib/packages.nu`
 Package stage only:
 
-- install package groups
+- install package groups (or a single group via `install-package-group`)
 - remove packages
+- reinstall packages (base-image replacement mechanism)
 - install fixed URL RPMs
 - install GitHub latest RPMs
+- `dnf clean` after each group so layers stay lean
 
 ---
 
@@ -207,26 +222,57 @@ build.nu
   ├─ load extras.nuon
   ├─ load system.nuon
   │
-  ├─ run-repo-stage
-  │   ├─ install rpmfusion
-  │   ├─ set dnf config-manager options
-  │   ├─ disable rawhide repos
-  │   ├─ install terra-release
-  │   ├─ enable copr groups
-  │   └─ apply repo priorities
+  ├─ (--stage repo)
+  │   run-repo-stage
+  │     ├─ install rpmfusion
+  │     ├─ set dnf config-manager options
+  │     ├─ disable rawhide repos
+  │     ├─ install terra-release
+  │     ├─ enable copr groups
+  │     └─ apply repo priorities
   │
-  ├─ run-package-stage
-  │   ├─ install package groups
-  │   ├─ remove packages
-  │   ├─ install static rpms
-  │   └─ install github latest rpms
+  ├─ (--stage packages)
+  │   install-package-groups (or install-package-group --group <name>)
+  │     └─ dnf install each group in install_order (stable first)
   │
-  └─ run-system-stage
-      ├─ configure flatpak remotes
-      ├─ refresh font cache
-      ├─ enable services
-      └─ run bootc container lint
+  ├─ (--stage finalize)
+  │   finalize-packages
+  │     ├─ remove packages
+  │     ├─ reinstall packages
+  │     ├─ install static rpms
+  │     ├─ install github latest rpms
+  │     └─ install fonts
+  │
+  └─ (--stage system)
+      run-system-stage
+        ├─ configure flatpak remotes
+        ├─ refresh font cache
+        ├─ enable services
+        └─ run bootc container lint
 ```
+
+## Layer ordering
+
+The `Containerfile` no longer runs the whole pipeline in one `RUN`.
+Instead it splits work across several `RUN` steps — each becomes its own
+image layer — ordered from **most stable to most frequently changing**
+so unchanged layers are cached and only the layers after a change rebuild:
+
+```dockerfile
+RUN nu build.nu --stage repo
+RUN nu build.nu --stage packages --group system
+RUN nu build.nu --stage packages --group fonts
+RUN nu build.nu --stage packages --group utils
+RUN nu build.nu --stage packages --group desktop
+RUN nu build.nu --stage packages --group gaming
+RUN nu build.nu --stage finalize
+RUN nu build.nu --stage system
+```
+
+If you add a new package group, decide where it sits on the stability
+axis and add a matching `RUN ... --group <name>` line, plus a `--stage
+repo`-style comment. The `install_order` in `config/packages.nuon` only
+matters for the `all` / no-flag path.
 
 ---
 
@@ -256,11 +302,20 @@ zmx run system-oci -- nu build/scripts/build.nu build --dry-run
 
 ### 3. Run during container build
 
-`Containerfile` currently uses:
+`Containerfile` currently uses several staged `RUN` steps (see
+“Layer ordering”), each loading the build config and running one step:
 
 ```dockerfile
 COPY build /tmp/build
-RUN nu /tmp/build/scripts/build.nu /tmp/build
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage repo
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group system
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group fonts
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group utils
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group desktop
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group gaming
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage finalize
+# ... then systemd units are copied, then:
+RUN nu /tmp/build/scripts/build.nu /tmp/build --stage system
 ```
 
 Note that the argument is the **build root**, not a single config file.

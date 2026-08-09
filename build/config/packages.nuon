@@ -1,5 +1,8 @@
 {
-  install_order: ["desktop" "gaming" "utils" "fonts" "system"]
+  # Install order matters for layer caching: put the most stable,
+  # foundational packages first so they land in early (cached) layers,
+  # and the frequently-changing ones (desktop, gaming) last.
+  install_order: ["system" "fonts" "utils" "desktop" "gaming"]
 
   reinstall: []
 

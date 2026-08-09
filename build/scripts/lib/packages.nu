@@ -54,7 +54,26 @@ export def install-package-groups [dry_run: bool, packages_cfg] {
     let packages = ($packages_cfg.groups | get $group)
     print-step $"installing package group: ($group)"
     dnf-install-lean $dry_run $packages
+    # keep each group's layer lean; also safe to run between RUN steps
+    dnf-clean $dry_run
   }
+}
+
+export def install-package-group [dry_run: bool, packages_cfg, group: string] {
+  let packages = ($packages_cfg.groups | get $group)
+  print-step $"installing package group: ($group)"
+  dnf-install-lean $dry_run $packages
+  dnf-clean $dry_run
+}
+
+export def finalize-packages [dry_run: bool, packages_cfg, extras_cfg] {
+  print-step "finalizing packages (remove / reinstall / extras)"
+  remove-packages $dry_run $packages_cfg.remove
+  reinstall-packages $dry_run $packages_cfg.reinstall
+  install-static-rpms $dry_run $extras_cfg.static
+  install-github-latest-rpms $dry_run $extras_cfg.github_latest
+  install-fonts $dry_run $extras_cfg.fonts
+  dnf-clean $dry_run
 }
 
 export def remove-packages [dry_run: bool, packages] {
@@ -111,12 +130,11 @@ export def reinstall-packages [dry_run: bool, packages] {
   run-cmd $dry_run "dnf" ["install" "-y" "--setopt=install_weak_deps=False" "--nodocs" ...$packages]
 }
 
-export def run-package-stage [dry_run: bool, packages_cfg, extras_cfg] {
-  install-package-groups $dry_run $packages_cfg
-  remove-packages $dry_run $packages_cfg.remove
-  reinstall-packages $dry_run $packages_cfg.reinstall
-  install-static-rpms $dry_run $extras_cfg.static
-  install-github-latest-rpms $dry_run $extras_cfg.github_latest
-  install-fonts $dry_run $extras_cfg.fonts
-  dnf-clean $dry_run
+export def run-package-stage [dry_run: bool, packages_cfg, extras_cfg, group?: string] {
+  if ($group | is-not-empty) {
+    install-package-group $dry_run $packages_cfg $group
+  } else {
+    install-package-groups $dry_run $packages_cfg
+    finalize-packages $dry_run $packages_cfg $extras_cfg
+  }
 }
