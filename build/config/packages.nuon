@@ -2,30 +2,33 @@
   # Install order matters for layer caching: put the most stable,
   # foundational packages first so they land in early (cached) layers,
   # and the frequently-changing ones (desktop, gaming) last.
-  install_order: ["system" "fonts" "utils" "desktop" "gaming"]
+  #
+  # NOTE: keep this list in sync with the RUN layers in the Containerfile.
+  install_order: ["system" "fonts" "services" "utils" "desktop" "gaming"]
 
   reinstall: []
 
   groups: {
-    desktop: [
-      "flatpak"
-      "hyprland"
-      "niri"
-      "xdg-desktop-portal"
-      "xdg-desktop-portal-gnome"
-      "xdg-desktop-portal-gtk"
-      "xdg-desktop-portal-hyprland"
-      "gpu-screen-recorder"
-      "ghostty"
-      "noctalia-git"
+    # ---------------------------------------------------------------
+    # system  — foundational, very rarely churn (cached best)
+    # ---------------------------------------------------------------
+    system: [
+      "zram-generator"
+      "mesa-vulkan-drivers"
     ]
 
-    gaming: []
+    # ---------------------------------------------------------------
+    # fonts
+    # ---------------------------------------------------------------
+    fonts: [
+      "google-noto-sans-fonts"
+    ]
 
-    utils: [
-      "zmx"
-      "copr-cli"
-      "ly"
+    # ---------------------------------------------------------------
+    # services  — daemons / virtualization / audio / network
+    # ---------------------------------------------------------------
+    services: [
+      # virtualization
       "qemu-kvm"
       "libvirt-daemon-kvm"
       "libvirt-daemon-config-network"
@@ -36,48 +39,93 @@
       "edk2-ovmf"
       "swtpm"
       "dnsmasq"
-      "colord"
-      "upower"
-      "xdg-utils"
-      "firewalld"
+      # audio
       "pipewire"
       "pipewire-utils"
       "wireplumber"
       "pipewire-alsa"
       "pipewire-pulseaudio"
-      "git"
-      "curl"
-      "unzip"
-      "p7zip"
-      "busybox"
-      "gcc"
+      # network
+      "NetworkManager-wifi"
+      "iwlwifi-mvm-firmware"
       "dae"
       "sing-box"
+      # system daemons
+      "colord"
+      "upower"
+      "firewalld"
+    ]
+
+    # ---------------------------------------------------------------
+    # utils  — CLI / dev / container tooling
+    # ---------------------------------------------------------------
+    utils: [
+      # package & container management
+      "copr-cli"
       "distrobox"
       "image-builder"
       "skopeo"
+      # nix package manager
       "nix"
       "nix-daemon"
       "nix-filesystem"
       "nix-system"
       "nix-legacy"
+      # dev toolchain
+      "gcc"
+      "git"
+      # archives / misc cli
+      "curl"
+      "unzip"
+      "p7zip"
+      "busybox"
+      # graphics / system
+      "vulkan-tools"
+      "pciutils"
+      "xdg-utils"
+      "glibc-langpack-en"
+    ]
+
+    # ---------------------------------------------------------------
+    # desktop  — GUI session, changes most often (cached worst)
+    # ---------------------------------------------------------------
+    desktop: [
+      # window managers
+      "hyprland"
+      "niri"
+      # display manager
+      "ly"
+      # file managers
+      "nautilus"
+      "dolphin"
+      # desktop portals
+      "xdg-desktop-portal"
+      "xdg-desktop-portal-gnome"
+      "xdg-desktop-portal-gtk"
+      "xdg-desktop-portal-hyprland"
+      # terminal emulators
       "foot"
       "foot-terminfo"
-      "vulkan-tools"
-      "NetworkManager-wifi"
-      "iwlwifi-mvm-firmware"
-      "glibc-langpack-en"
-      "pciutils"
+      "ghostty"
+      # screenshot
+      "grim"
+      "slurp"
+      "satty"
+      # clipboard
+      "cliphist"
+      # recording / shell
+      "gpu-screen-recorder"
+      "noctalia-git"
+      # input method (Chinese)
+      "fcitx5"
+      "fcitx5-configtool"
+      "fcitx5-chinese-addons"
+      "fcitx5-rime"
+      # flatpak
+      "flatpak"
     ]
 
-    fonts: [
-      "google-noto-sans-fonts"
-    ]
-
-    system: [
-      "zram-generator"
-      "mesa-vulkan-drivers"
-    ]
+    gaming: []
   }
 
   remove: [
