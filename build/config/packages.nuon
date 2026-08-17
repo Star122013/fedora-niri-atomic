@@ -45,6 +45,7 @@
       "wireplumber"
       "pipewire-alsa"
       "pipewire-pulseaudio"
+      "mpd"
       # network
       "NetworkManager-wifi"
       "iwlwifi-mvm-firmware"
