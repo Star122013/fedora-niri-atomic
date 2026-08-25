@@ -76,7 +76,7 @@ RUN nu /tmp/build/scripts/build.nu /tmp/build --stage packages --group gaming
 # L9: removals / reinstalls / static & github-latest RPMs / font download + clean
 RUN nu /tmp/build/scripts/build.nu /tmp/build --stage finalize
 
-# pre-copy custom systemd units (nix.mount, etc.) so systemctl enable can find them
+# pre-copy custom systemd units so systemctl enable can find them
 COPY rootfs/usr/lib/systemd/system/ /usr/lib/systemd/system/
 
 # L10: flatpak remotes / font cache / systemd services / bootc lint

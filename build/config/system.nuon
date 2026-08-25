@@ -17,10 +17,6 @@
       "ly@tty2.service"
       "firewalld.service"
       "avahi-daemon.service"
-      "nix.mount"
-      "nix-daemon"
-      "fedora-nix-graphics-rebuild.service"
-      "fedora-nix-gc.timer"
       "fedora-repair-passwd.service"
     ]
   }

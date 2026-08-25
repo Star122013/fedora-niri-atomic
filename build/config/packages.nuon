@@ -66,12 +66,6 @@
       "distrobox"
       "image-builder"
       "skopeo"
-      # nix package manager
-      "nix"
-      "nix-daemon"
-      "nix-filesystem"
-      "nix-system"
-      "nix-legacy"
       # dev toolchain
       "gcc"
       "git"
