@@ -35,6 +35,7 @@
       utils: [
         "zhullyb/v2rayA"
         "peterwu/rendezvous"
+        "jdxcode/mise"
       ]
     }
   }
