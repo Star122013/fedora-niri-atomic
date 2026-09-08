@@ -9,9 +9,7 @@
   }
 
   services: {
-    disable: [
-      "bootc-fetch-apply-updates.timer"
-    ]
+    disable: []
     enable: [
       "bluetooth.service"
       "ly@tty2.service"
