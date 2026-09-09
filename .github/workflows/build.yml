@@ -15,12 +15,14 @@ concurrency:
   group: build-and-push-oci-image
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
 
     steps:
       - uses: actions/checkout@v7
@@ -40,4 +42,3 @@ jobs:
             ${{ env.IMAGE_NAME }}:latest
             ${{ env.IMAGE_NAME }}:raw
             ${{ env.IMAGE_NAME }}:raw-${{ github.sha }}
-
