@@ -25,6 +25,7 @@
       "google-noto-emoji-fonts"
       "google-noto-color-emoji-fonts"
       "iosevka-custom-fonts"
+      "sarasa-gothic-fonts"
     ]
 
     # ---------------------------------------------------------------
@@ -79,6 +80,7 @@
       "xdg-utils"
       "glibc-langpack-en"
       "mise"
+      "pass"
     ]
 
     # ---------------------------------------------------------------
