@@ -13,7 +13,6 @@
     enable: [
       "bluetooth.service"
       "ly@tty2.service"
-      "firewalld.service"
       "avahi-daemon.service"
       "fedora-repair-passwd.service"
     ]

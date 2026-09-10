@@ -53,11 +53,8 @@
       "NetworkManager-wifi"
       "iwlwifi-mvm-firmware"
       "dae"
-      "sing-box"
       # system daemons
-      "colord"
       "upower"
-      "firewalld"
     ]
 
     # ---------------------------------------------------------------
@@ -68,7 +65,6 @@
       "copr-cli"
       "distrobox"
       "image-builder"
-      "skopeo"
       # dev toolchain
       "gcc"
       "git"
