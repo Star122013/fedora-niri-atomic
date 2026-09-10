@@ -73,7 +73,6 @@
       "curl"
       "unzip"
       "p7zip"
-      "busybox"
       # graphics / system
       "vulkan-tools"
       "pciutils"
@@ -81,6 +80,7 @@
       "glibc-langpack-en"
       "mise"
       "pass"
+      "zmx"
     ]
 
     # ---------------------------------------------------------------
@@ -89,6 +89,8 @@
     desktop: [
       # window managers
       "hyprland"
+      "umbriel"
+      "xdg-desktop-portal-umbriel"
       "niri"
       # display manager
       "ly"
