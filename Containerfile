@@ -53,14 +53,23 @@ COPY build /tmp/build
 # only the layers after a change are rebuilt.
 # ================================================================
 
-# L1: bootstrap nushell, then let Nu orchestrate repos/packages/services
-RUN dnf install -y \
-    https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-    https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
-    'dnf5-command(copr)' \
-    && dnf copr enable -y atim/nushell \
-    && dnf install -y nushell \
-    && dnf clean all
+# L1: bootstrap nushell, then let Nu orchestrate repos/packages/services.
+#
+# dnf-mirrors.py expands the geo-IP'd Fedora/RPMFusion metalinks into explicit
+# global baseurl lists (blocked hosts removed), so the build host's egress IP
+# no longer decides the mirror. RPMFusion release RPMs are pulled from the
+# first reachable mirror because download1.rpmfusion.org 403s some egress IPs.
+RUN set -eux; \
+    python3 /tmp/build/scripts/dnf-mirrors.py filter; \
+    python3 /tmp/build/scripts/dnf-mirrors.py fetch-rpmfusion /tmp/rpmfusion; \
+    dnf install -y \
+      'dnf5-command(copr)' \
+      /tmp/rpmfusion/rpmfusion-free-release.noarch.rpm \
+      /tmp/rpmfusion/rpmfusion-nonfree-release.noarch.rpm; \
+    python3 /tmp/build/scripts/dnf-mirrors.py filter; \
+    dnf copr enable -y atim/nushell; \
+    dnf install -y nushell; \
+    dnf clean all
 
 # L2: repo stage
 RUN nu /tmp/build/scripts/build.nu /tmp/build --stage repo
