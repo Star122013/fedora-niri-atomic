@@ -22,6 +22,8 @@
     # ---------------------------------------------------------------
     fonts: [
       "google-noto-sans-fonts"
+      "google-noto-sans-yi-fonts"
+      "google-noto-serif-tibetan-fonts"
       "google-noto-emoji-fonts"
       "google-noto-color-emoji-fonts"
       "iosevka-custom-fonts"
