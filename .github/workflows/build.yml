@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
 
 env:
+  # published image
   IMAGE_NAME: ghcr.io/star122013/fedora-niri-atomic
+  # intermediate, unchunked build kept only in the runner's containers-storage
+  BUILD_IMAGE: localhost/fedora-niri-atomic-build
+  AUTHFILE: /tmp/ghcr-auth.json
 
 concurrency:
   group: build-and-push-oci-image
@@ -22,23 +26,78 @@ permissions:
 jobs:
   build:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    # GitHub-hosted Ubuntu runner: podman is preinstalled, and rpm-ostree is
+    # taken from inside the built fedora-bootc image itself, so no Fedora
+    # runner is needed. Pinned to 26.04 for podman >= 5 (`--mount type=image`).
+    runs-on: ubuntu-26.04
 
     steps:
       - uses: actions/checkout@v7
 
-      - uses: docker/login-action@v4
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@main
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          tool-cache: true
+          swap-storage: true
 
-      - uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: Containerfile
-          push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:raw
-            ${{ env.IMAGE_NAME }}:raw-${{ github.sha }}
+      - name: Log in to ghcr.io
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+            sudo podman login ghcr.io \
+              -u "${{ github.actor }}" \
+              --authfile "$AUTHFILE" \
+              --password-stdin
+
+      - name: Build unchunked image
+        run: sudo podman build -t "$BUILD_IMAGE" -f Containerfile .
+
+      - name: Push raw (unchunked) tags
+        run: |
+          sudo podman tag "$BUILD_IMAGE" "$IMAGE_NAME:raw"
+          sudo podman tag "$BUILD_IMAGE" "$IMAGE_NAME:raw-${{ github.sha }}"
+          sudo podman push --authfile "$AUTHFILE" "$IMAGE_NAME:raw"
+          sudo podman push --authfile "$AUTHFILE" "$IMAGE_NAME:raw-${{ github.sha }}"
+
+      # Split the image into per-RPM layers so a future update only downloads
+      # the layers whose packages actually changed. rpm-ostree comes from the
+      # built image; only the rootfs (via `--mount type=image`) and the output
+      # directory are shared with the host.
+      - name: Rechunk image by RPM boundaries
+        run: |
+          set -euo pipefail
+
+          out="${PWD}/_rechunk"
+          rm -rf "$out"
+          mkdir -p "$out"
+
+          rechunk() {
+            sudo podman run --rm --privileged \
+              --mount=type=image,src="${BUILD_IMAGE}",target=/rpm-ostree \
+              --volume "${out}:/run/out:z" \
+              --volume "${AUTHFILE}:/auth.json:ro" \
+              --env REGISTRY_AUTH_FILE=/auth.json \
+              --entrypoint /usr/bin/rpm-ostree \
+              "${BUILD_IMAGE}" \
+              compose build-chunked-oci \
+                --bootc \
+                --format-version=2 \
+                --max-layers 127 \
+                --rootfs /rpm-ostree \
+                --output oci-archive:/run/out/chunked.oci \
+                "$@"
+          }
+
+          # `--previous-build` keeps the layer plan stable across builds; fall
+          # back for the first run when the tag does not exist yet.
+          rechunk --previous-build "docker://${IMAGE_NAME}:latest" \
+            || { sudo rm -f "$out/chunked.oci"; rechunk; }
+
+          chunked="$(sudo podman pull "oci-archive:${out}/chunked.oci")"
+          sudo podman tag "$chunked" "$IMAGE_NAME:latest"
+          sudo podman push --authfile "$AUTHFILE" "$IMAGE_NAME:latest"
+
+      - name: Clean up
+        if: always()
+        run: |
+          sudo podman rmi -f "$BUILD_IMAGE" || true
+          rm -rf "${PWD}/_rechunk"

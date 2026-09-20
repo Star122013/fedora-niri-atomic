@@ -110,7 +110,12 @@
 - push 时构建
 - 定时构建
 - 手动触发构建
-- 推送镜像到 `ghcr.io/star122013/fedora-niri-atomic:latest`
+- 用 `podman` 构建未分块的镜像
+- 用 `rpm-ostree compose build-chunked-oci` 重新分块（按 RPM 边界分层）
+- 推送分块后的镜像到 `ghcr.io/star122013/fedora-niri-atomic:latest`
+
+运行在 GitHub 托管的 `ubuntu-26.04` runner 上；`rpm-ostree` 取自构建出的
+`fedora-bootc` 镜像内部，因此不需要 Fedora runner。
 
 ---
 
@@ -373,11 +378,20 @@ GitHub Actions 工作流：
 - 在 `push` 时构建
 - 定时构建
 - 支持手动触发
+- 先用 `podman` 构建镜像，再用 `rpm-ostree compose build-chunked-oci`
+  重新分块，使发布的镜像按 RPM 边界拆成多层；之后 bootc 更新只下载
+  变动包对应的层
 - 推送到：
 
 ```text
-ghcr.io/star122013/fedora-niri-atomic:latest
+ghcr.io/star122013/fedora-niri-atomic:latest       # 分块（按 RPM 分层）
+ghcr.io/star122013/fedora-niri-atomic:raw          # 未分块的 Containerfile 构建
+ghcr.io/star122013/fedora-niri-atomic:raw-<sha>    # 未分块，按 commit
 ```
+
+该 job 运行在 GitHub 托管的 `ubuntu-26.04` runner 上。宿主上不装
+`rpm-ostree`，而是用构建出的 `fedora-bootc` 镜像内部自带的 `rpm-ostree`
+对镜像 rootfs 进行处理，因此不需要自托管 Fedora runner。
 
 ---
 

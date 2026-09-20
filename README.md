@@ -110,7 +110,12 @@ Responsible for CI:
 - build on push
 - scheduled build
 - manual dispatch
-- push image to `ghcr.io/star122013/fedora-niri-atomic:latest`
+- build an unchunked image with `podman`
+- rechunk it with `rpm-ostree compose build-chunked-oci` (per-RPM layers)
+- push the chunked image to `ghcr.io/star122013/fedora-niri-atomic:latest`
+
+Runs on a GitHub-hosted `ubuntu-26.04` runner; `rpm-ostree` is taken from
+inside the built `fedora-bootc` image, so no Fedora runner is required.
 
 ---
 
@@ -360,11 +365,22 @@ It currently:
 - builds on `push`
 - builds on schedule
 - supports manual dispatch
+- builds the image with `podman`, then rechunks it with
+  `rpm-ostree compose build-chunked-oci` so the published image is split into
+  per-RPM layers; bootc updates then only download the layers whose packages
+  changed
 - pushes to:
 
 ```text
-ghcr.io/star122013/fedora-niri-atomic:latest
+ghcr.io/star122013/fedora-niri-atomic:latest       # chunked (per-RPM layers)
+ghcr.io/star122013/fedora-niri-atomic:raw          # unchunked Containerfile build
+ghcr.io/star122013/fedora-niri-atomic:raw-<sha>    # unchunked, per-commit
 ```
+
+The job runs on a GitHub-hosted `ubuntu-26.04` runner. `rpm-ostree` is not
+installed on the host; it is executed from inside the freshly built
+`fedora-bootc` image (which ships it) against the image rootfs, so no
+self-hosted Fedora runner is needed.
 
 ---
 
