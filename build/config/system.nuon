@@ -12,7 +12,7 @@
     disable: []
     enable: [
       "bluetooth.service"
-      "ly@tty2.service"
+      "greetd.service"
       "avahi-daemon.service"
       "fedora-repair-passwd.service"
     ]
