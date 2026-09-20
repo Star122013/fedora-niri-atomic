@@ -106,10 +106,12 @@ export def apply-priority-overrides [dry_run: bool, overrides] {
 
 export def run-repo-stage [dry_run: bool, repos_cfg] {
   install-rpmfusion $dry_run $repos_cfg
+  # external repos must exist before config-manager setopt runs, since setopt
+  # targets repo ids defined inside those repo files.
+  add-external-repos $dry_run $repos_cfg.external_repos
   enable-config-manager-options $dry_run $repos_cfg.config_manager_setopts
   disable-matching-repos $dry_run $repos_cfg.disable_glob
   enable-copr-groups $dry_run $repos_cfg.copr
-  add-external-repos $dry_run $repos_cfg.external_repos
   apply-priority-overrides $dry_run $repos_cfg.priority_overrides
   dnf-clean $dry_run
 }

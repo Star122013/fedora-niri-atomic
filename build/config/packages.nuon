@@ -65,9 +65,7 @@
     # ---------------------------------------------------------------
     utils: [
       # package & container management
-      "copr-cli"
       "distrobox"
-      "image-builder"
       # dev toolchain
       "gcc"
       "git"
@@ -92,10 +90,11 @@
       # window managers
       "hyprland"
       "umbriel"
-      "xdg-desktop-portal-umbriel"
       "niri"
       # display manager
       "ly"
+      "noctalia-greeter-git"
+      "greetd"
       #theme
       "bibata-cursor-theme"
       "adw-gtk3-theme"
@@ -107,9 +106,12 @@
       "xdg-desktop-portal-gnome"
       "xdg-desktop-portal-gtk"
       "xdg-desktop-portal-hyprland"
+      "xdg-desktop-portal-umbriel"
       # terminal emulators
       "monstar"
       "ghostty"
+      "gram"
+      "flow"
       # screenshot
       "grim"
       "slurp"
