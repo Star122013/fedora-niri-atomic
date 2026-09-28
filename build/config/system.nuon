@@ -9,7 +9,9 @@
   }
 
   services: {
-    disable: []
+    disable: [
+      bootc-fetch-apply-updates.timer
+    ]
     enable: [
       "bluetooth.service"
       "greetd.service"
