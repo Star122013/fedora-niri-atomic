@@ -80,6 +80,7 @@
       "mise"
       "pass"
       "zmx"
+      "zathura"
     ]
 
     # ---------------------------------------------------------------
@@ -99,7 +100,6 @@
       "adw-gtk3-theme"
       # file managers
       "nautilus"
-      "dolphin"
       # desktop portals
       "xdg-desktop-portal"
       "xdg-desktop-portal-gnome"
@@ -117,8 +117,6 @@
       "satty"
       # clipboard
       "cliphist"
-      # recording / shell
-      "gpu-screen-recorder"
       "noctalia-git"
       # input method (Chinese)
       "fcitx5"
@@ -127,6 +125,7 @@
       "fcitx5-rime"
       # flatpak
       "flatpak"
+      "vicinae"
     ]
 
     gaming: []
