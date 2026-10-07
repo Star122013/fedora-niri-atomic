@@ -82,6 +82,7 @@
       "zmx"
       "zathura"
       "go-musicfox"
+      "mpv"
     ]
 
     # ---------------------------------------------------------------
@@ -99,6 +100,8 @@
       #theme
       "bibata-cursor-theme"
       "adw-gtk3-theme"
+      "papirus-icon-theme"
+      "papirus-icon-theme-dark"
       # file managers
       "nautilus"
       # desktop portals
